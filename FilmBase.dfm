@@ -39,7 +39,7 @@ object frmFilmBase: TfrmFilmBase
         Caption = #1053#1072#1079#1074#1072#1085#1080#1077
         MaxWidth = 500
         MinWidth = 100
-        Width = 140
+        Width = 120
       end
       item
         Caption = #1043#1086#1076
@@ -56,20 +56,26 @@ object frmFilmBase: TfrmFilmBase
       item
         Caption = #1056#1077#1078#1080#1089#1089#1105#1088
         MaxWidth = 200
-        MinWidth = 100
-        Width = 100
+        MinWidth = 90
+        Width = 90
       end
       item
         Caption = #1046#1072#1085#1088
         MaxWidth = 150
-        MinWidth = 100
-        Width = 100
+        MinWidth = 90
+        Width = 90
       end
       item
         Caption = #1044#1083#1080#1090#1077#1083#1100#1085#1086#1089#1090#1100
         MaxWidth = 110
         MinWidth = 80
         Width = 110
+      end
+      item
+        Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1085#1086
+        MaxWidth = 40
+        MinWidth = 30
+        Width = 40
       end
       item
         Caption = #1056#1077#1081#1090#1080#1085#1075
@@ -79,6 +85,8 @@ object frmFilmBase: TfrmFilmBase
       end>
     TabOrder = 0
     ViewStyle = vsReport
+    ExplicitLeft = 96
+    ExplicitTop = 8
   end
   object btnSelect: TButton
     Left = 696

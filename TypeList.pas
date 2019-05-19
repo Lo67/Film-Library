@@ -64,6 +64,7 @@ type
     FileName : string;
     constructor Create(const aFileName : string);
     procedure AddFilm(const item: PFilm);
+ //   destructor Kill;
   end;
 
   procedure CreateFilm(var List : TFilmList; const aItem : TItem);
@@ -77,7 +78,7 @@ var
 begin
   FileName := aFileName;
   AssignFile(F, FileName);
-  if not FileExists(filename) then
+  if not FileExists(Filename) then
     Rewrite(F)
   else
   begin
@@ -89,35 +90,40 @@ begin
       AddFilm(ItemTmp);
     end;
   end;
-  CloseFile(f);
+  CloseFile(F);
 end;
 
 procedure TFilmList.AddFilm(const Item: PFilm);     //appendItem
 begin
   if Head = nil then
-    Head := Item
+  begin
+    //New(Head);
+    Head:= Item;
+    Tail := Head^.Next;
+  end
   else
   begin
-    Tail.Next := Item;
-    Tail := Tail.Next;
+    Tail := Item;
+    Tail := Tail^.Next;
   end;
   Inc(fICount);
 end;
 
 procedure CreateFilm(var List : TFilmList; const aItem : TItem );
 var
-  //FilmInfo : TFilm;
   PFilmInfo : PFilm;
 begin
   New(PFilmInfo);
+
   PFilmInfo^.Item := aItem;
-
-//  PFilmInfo := ^FilmInfo;
-
   List.AddFilm(PFilmInfo);
+
+  Dispose(PFilmInfo);
 end;
 
-
-
+{destructor TFilmList.Kill;
+begin
+  Dispose(Head);
+  end;}
 
 end.

@@ -32,6 +32,7 @@ type
 var
   frmFilmBase: TfrmFilmBase;
   List : TFilmList;
+
 implementation
 
 {$R *.dfm}
@@ -57,9 +58,9 @@ var
   CurrNode: PFilm;
 begin
   CurrNode := List.Head;
-  while CurrNode.Next <> nil do
+  while CurrNode{.Next} <> nil do
   begin
-    CurrNode := CurrNode^.Next;
+
     with lvFilmTab.Items.Add do
     begin
       Caption := IntToStr(CurrNode^.Item.Index);
@@ -68,13 +69,14 @@ begin
       SubItems.Add(CurrNode^.Item.Country);
       SubItems.Add(CurrNode^.Item.Director.LastName);
       SubItems.Add(''{CurrNode^.Item.Genre});
-      SubItems.Add(IntToStr(CurrNode^.Item.Year));;
+      SubItems.Add(IntToStr(CurrNode^.Item.Duration));;
       if CurrNode^.Item.Ready then
-        SubItems.Add('     +')
+        SubItems.Add('+')
       else
         SubItems.Add('');
       SubItems.Add(IntToStr(CurrNode^.Item.Rating));
     end;
+      CurrNode := CurrNode^.Next;
   end;
 end;
 

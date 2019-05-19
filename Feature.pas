@@ -113,7 +113,7 @@ var
 begin
   with Info do
   begin
-    Index := List.fICount;
+    Index := List.fICount + 1;
     Title := edtTitle.Text;
     Director.LastName := edtDirectorLastName.Text;
     Director.Name := edtDirectorName.Text;
