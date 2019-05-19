@@ -19,6 +19,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnAddClick(Sender: TObject);
+    procedure btnEditClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -43,6 +44,11 @@ begin
   frmFeatures.ShowModal;
 end;
 
+procedure TfrmFilmBase.btnEditClick(Sender: TObject);
+begin
+  lvFilmTab.ItemFocused
+end;
+
 procedure TfrmFilmBase.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    frmMenu.Show;
@@ -50,13 +56,15 @@ end;
 
 procedure TfrmFilmBase.FormCreate(Sender: TObject);
 begin
-  List := TFilmList.Create('Films');
+  List := TFilmList.Create(FILE_NAME);
+  UpdateTab(List);
 end;
 
 procedure TfrmFilmBase.UpdateTab(List: TFilmList);
 var
   CurrNode: PFilm;
 begin
+  lvFilmTab.Clear;
   CurrNode := List.Head;
   while CurrNode{.Next} <> nil do
   begin
@@ -79,5 +87,7 @@ begin
       CurrNode := CurrNode^.Next;
   end;
 end;
+
+
 
 end.

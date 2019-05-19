@@ -5,6 +5,9 @@ interface
 uses
   SysUtils;
 
+const
+  FILE_NAME = 'Films';
+
 type
   TName = string[30];
   TTitle = string[70];
@@ -68,6 +71,7 @@ type
   end;
 
   procedure CreateFilm(var List : TFilmList; const aItem : TItem);
+  procedure SaveList(var List : TFilmList; const aFileName : string);
 
 implementation
 
@@ -97,14 +101,14 @@ procedure TFilmList.AddFilm(const Item: PFilm);     //appendItem
 begin
   if Head = nil then
   begin
-    //New(Head);
     Head:= Item;
-    Tail := Head^.Next;
+    Tail := Item;
   end
   else
   begin
+    Tail.Next := Item;
     Tail := Item;
-    Tail := Tail^.Next;
+    Tail.Next := nil;
   end;
   Inc(fICount);
 end;
@@ -117,13 +121,27 @@ begin
 
   PFilmInfo^.Item := aItem;
   List.AddFilm(PFilmInfo);
-
-  Dispose(PFilmInfo);
 end;
 
 {destructor TFilmList.Kill;
 begin
   Dispose(Head);
   end;}
+
+procedure SaveList(var List : TFilmList; const aFileName : string);
+var
+  F: file of TFilm;
+  CurrNode: PFilm;
+begin
+  AssignFile(F, aFileName);
+  Rewrite(F);
+  CurrNode := List.Head;
+  while CurrNode <> nil do
+  begin
+    Write(F,CurrNode^);
+    CurrNode := CurrNode.Next;
+  end;
+  CloseFile(F);
+end;
 
 end.

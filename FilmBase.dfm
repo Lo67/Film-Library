@@ -83,10 +83,9 @@ object frmFilmBase: TfrmFilmBase
         MinWidth = 60
         Width = 75
       end>
+    RowSelect = True
     TabOrder = 0
     ViewStyle = vsReport
-    ExplicitLeft = 96
-    ExplicitTop = 8
   end
   object btnSelect: TButton
     Left = 696
@@ -112,6 +111,7 @@ object frmFilmBase: TfrmFilmBase
     Height = 41
     Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
     TabOrder = 3
+    OnClick = btnEditClick
   end
   object btnDelete: TButton
     Left = 696

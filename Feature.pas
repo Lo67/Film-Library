@@ -135,6 +135,7 @@ begin
 
   CreateFilm(List,Info);
   frmFilmBase.UpdateTab(List);
+  SaveList(List,FILE_NAME);
 
   frmFeatures.Close;
 end;
