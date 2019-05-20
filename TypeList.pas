@@ -115,12 +115,10 @@ end;
 
 destructor TFilmList.Destroy;
 begin
-   {while not IsEmpty() do
+   while not IsEmpty() do
    begin
-     DeleteItem();
+     DeleteFilm(1);
    end;
-   Или DeleteList();
-
    Dispose(Head);
    Dispose(Tail);//Если будет invalid pointer operation убрать эту строку}
 end;
@@ -146,39 +144,57 @@ begin
   Inc(fICount);
 end;
 
-procedure TFilmList.DeleteFilm(FilmIndex:Integer);
+procedure TFilmList.DeleteFilm(FilmIndex: Integer);
 var
-   CurrTempFilm,PrevTempFilm:PFilm;
+   CurrTempFilm,PrevTempFilm: PFilm;
+   i: Integer;
 begin
-{  if not IsEmpty() then
+  if not IsEmpty() then
   begin
     if fICount > 1  then
     begin
-      PrevTempFilm := Head;
-
-
-      while (PrevTempFilm.Item.Index <> FilmIndex) and (PrevTempFilm.Next.Next <> nil) do
-         PrevTempFilm := PrevTempFilm.Next;
-      CurrTempFilm := PrevTempFilm.Next;
-      case TempFilm of
-        Head:
-        begin
-          if Head = Tail then
-          begin
-
-          end;
-        end;
-        Tail:
-        begin
-
-        end;
-        else
-
-
-
+      if FilmIndex > 1 then
+      begin
+        PrevTempFilm := Head;
+        while PrevTempFilm.Item.Index <> FilmIndex - 1 do
+           PrevTempFilm := PrevTempFilm.Next;
+        CurrTempFilm := PrevTempFilm.Next;
+        PrevTempFilm.Next := CurrTempFilm.Next;
+        if CurrTempFilm = Tail then
+           Tail := PrevTempFilm;
+        Dispose(CurrTempFilm);
+      end
+      else
+      begin
+        CurrTempFilm := Head;
+        Head := Head.Next;
+        Dispose(CurrTempFilm);
       end;
+    end
+    else
+    begin
+      CurrTempFilm := Head;
+      Head := nil;
+      Tail := nil;
+      Dispose(CurrTempFilm);
     end;
+    i := 1;
+    CurrTempFilm := Head;
+    while CurrTempFilm <> nil do
+    begin
+       CurrTempFilm.Item.Index := i;
+       Inc(i);
+       CurrTempFilm := CurrTempFilm.Next;
+    end;
+    fIcount := i - 1;
   end;
+
+
+{  по факту
+  Temp := Head;
+  Head:=nil;
+  Tail := nil;
+  Dispose (Temp)
      }
 end;
 
@@ -275,7 +291,7 @@ end;
 function TabGenre(Genre : TGenre): string;
 begin
   case Genre of
-    Adventure: Result := 'Приключения';
+    Adventure: Result := 'Приключения';      //В константы
     GAction: Result := 'Экшн';
     Comedy: Result := 'Комедия';
     Detective: Result := 'Детектив';

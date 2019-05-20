@@ -95,7 +95,8 @@ end;
 
 procedure TfrmFilmBase.FormCreate(Sender: TObject);
 begin
-  List := TFilmList.Create;                  //
+  List := TFilmList.Create;
+  //List.DeleteFilm(3);                 //
   UpdateTab(List);                                      //
 end;
 

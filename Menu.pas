@@ -14,6 +14,7 @@ type
     btnExit: TButton;
     procedure btnFilmBaseClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -39,6 +40,11 @@ procedure TfrmMenu.btnFilmBaseClick(Sender: TObject);
 begin
   frmMenu.Hide;
   frmFilmBase.ShowModal;
+end;
+
+procedure TfrmMenu.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   List.Destroy;
 end;
 
 end.

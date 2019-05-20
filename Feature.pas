@@ -196,7 +196,6 @@ begin
       if  Info.Ready then
         Info.Rating :=  cmbbxRatingChange(cmbbxRating);
     end;
-
   end;
 
   if frmFeatures.Tag = 1 then
