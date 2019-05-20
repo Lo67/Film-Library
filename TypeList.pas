@@ -63,21 +63,37 @@ type
   TFilmList = class
     Head : PFilm;
     Tail : PFilm;
-    fICount : Integer;
+    fICount : Integer ;
     FileName : string;
-    constructor Create(const aFileName : string);
-    procedure AddFilm(const item: PFilm);
- //   destructor Kill;
+    constructor Create;
+    procedure UploadFile (const aFileName: string);
+    destructor Destroy;
+    procedure AddFilm(const Item: PFilm);
+    procedure DeleteFilm(FilmIndex: Integer);
+    function IsEmpty():Boolean;
   end;
 
   procedure CreateFilm(var List : TFilmList; const aItem : TItem);
   procedure SaveList(var List : TFilmList; const aFileName : string);
+  procedure EditFilm(var List : TFilmList; const aItem : TItem; const aIndex : Integer);
+  function GetFilmByIndex(var List : TFilmList; const aIndex : Integer) : PFilm;
+  function GetRating(const aItem : TItem) : Integer;
+  function GetGenre(const aItem : TItem) : Integer;
+  function TabGenre(Genre : TGenre): string;
 
 implementation
 
-constructor TFilmList.Create(const aFileName: string);
+constructor TFilmList.Create;
+
+begin
+  Head := nil;
+  Tail := nil;
+  UploadFile (FILE_NAME);
+end;
+
+procedure TFilmList.UploadFile (const aFileName: string);
 var
-  F: file of TFilm;   //PFilm?
+  F: file of TFilm;
   ItemTmp: PFilm;
 begin
   FileName := aFileName;
@@ -97,11 +113,28 @@ begin
   CloseFile(F);
 end;
 
+destructor TFilmList.Destroy;
+begin
+   {while not IsEmpty() do
+   begin
+     DeleteItem();
+   end;
+   Или DeleteList();
+
+   Dispose(Head);
+   Dispose(Tail);//Если будет invalid pointer operation убрать эту строку}
+end;
+
+function TFilmList.IsEmpty():Boolean;
+begin
+  IsEmpty := Head = nil;
+end;
+
 procedure TFilmList.AddFilm(const Item: PFilm);     //appendItem
 begin
   if Head = nil then
   begin
-    Head:= Item;
+    Head := Item;
     Tail := Item;
   end
   else
@@ -113,6 +146,42 @@ begin
   Inc(fICount);
 end;
 
+procedure TFilmList.DeleteFilm(FilmIndex:Integer);
+var
+   CurrTempFilm,PrevTempFilm:PFilm;
+begin
+{  if not IsEmpty() then
+  begin
+    if fICount > 1  then
+    begin
+      PrevTempFilm := Head;
+
+
+      while (PrevTempFilm.Item.Index <> FilmIndex) and (PrevTempFilm.Next.Next <> nil) do
+         PrevTempFilm := PrevTempFilm.Next;
+      CurrTempFilm := PrevTempFilm.Next;
+      case TempFilm of
+        Head:
+        begin
+          if Head = Tail then
+          begin
+
+          end;
+        end;
+        Tail:
+        begin
+
+        end;
+        else
+
+
+
+      end;
+    end;
+  end;
+     }
+end;
+
 procedure CreateFilm(var List : TFilmList; const aItem : TItem );
 var
   PFilmInfo : PFilm;
@@ -122,11 +191,6 @@ begin
   PFilmInfo^.Item := aItem;
   List.AddFilm(PFilmInfo);
 end;
-
-{destructor TFilmList.Kill;
-begin
-  Dispose(Head);
-  end;}
 
 procedure SaveList(var List : TFilmList; const aFileName : string);
 var
@@ -142,6 +206,94 @@ begin
     CurrNode := CurrNode.Next;
   end;
   CloseFile(F);
+end;
+
+function GetFilmByIndex(var List : TFilmList; const aIndex : Integer) : PFilm;
+var
+  CurrNode : PFilm;
+begin
+  CurrNode := List.Head;
+  while CurrNode.Item.Index <> aIndex + 1 do
+    CurrNode := CurrNode.Next;
+  Result := CurrNode;
+end;
+
+procedure EditFilm(var List : TFilmList; const aItem : TItem; const aIndex : Integer);
+var
+  CurrNode: PFilm;
+begin
+  CurrNode := List.Head;
+  while CurrNode.Item.Index <> aIndex + 1 do
+    CurrNode := CurrNode.Next;
+  CurrNode^.Item := aItem;
+end;
+
+{ Определение значения ComboBox по рейтингу из списка }
+function GetGenre(const aItem : TItem) : Integer;
+begin
+  case aItem.Genre of
+    Adventure: Result := 0;
+    GAction: Result := 1;
+    Comedy: Result := 2;
+    Detective: Result := 3;
+    Drama: Result := 4;
+    Thriller: Result := 5;
+    Fantasy: Result :=  6;
+    Science_fiction: Result := 7;
+    Horror: Result := 8;
+    Historical: Result := 9;
+    Mystery: Result := 10;
+    Romance: Result := 11;
+    Western: Result := 12;
+    Animation: Result := 13;
+    Musical: Result := 14;
+    Satire: Result := 15;
+    Social: Result := 16;
+    Other: Result := 17;
+  end;
+end;
+
+{Определение значения ComboBox по рейтингу из списка }
+function GetRating(const aItem : TItem) : Integer;
+var
+  i: Integer;
+begin
+  case aItem.Rating of
+    10: Result := 0;
+    9: Result := 1;
+    8: Result := 2;
+    7: Result := 3;
+    6: Result := 4;
+    5: Result := 5;
+    4: Result := 6;
+    3: Result := 7;
+    2: Result := 8;
+    1: Result := 9;
+  end;
+end;
+
+function TabGenre(Genre : TGenre): string;
+begin
+  case Genre of
+    Adventure: Result := 'Приключения';
+    GAction: Result := 'Экшн';
+    Comedy: Result := 'Комедия';
+    Detective: Result := 'Детектив';
+    Drama: Result := 'Драма';
+    Thriller: Result := 'Триллер';
+    Fantasy: Result := 'Фантастика';
+    Science_fiction: Result := 'Научная фантастика';
+    Horror: Result :=  'Ужастик';
+    Historical: Result := 'Исторический';
+    Mystery: Result := 'Мистика';
+    Romance: Result := 'Мелодрама';
+    Western: Result := 'Вестерн';
+    Animation: Result := 'Мультфильм';
+    Musical: Result := 'Мьюзикл';
+    Satire: Result := 'Сатира';
+    Social: Result := 'Социальный';
+    Other: Result := 'Другое';
+  end;
 end;
 
 end.

@@ -20,15 +20,15 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnAddClick(Sender: TObject);
     procedure btnEditClick(Sender: TObject);
+    procedure btnSelectClick(Sender: TObject);
 
   private
     { Private declarations }
   public
      //FilmList : TFilmList;
-  procedure UpdateTab(List : TFilmList);
+    procedure UpdateTab(List : TFilmList);
+    function GetSelectIndex(): Integer;
   end;
-
-  //KAJSLGKJALDKFJADKLF
 
 var
   frmFilmBase: TfrmFilmBase;
@@ -41,12 +41,51 @@ uses
   Menu;
 procedure TfrmFilmBase.btnAddClick(Sender: TObject);
 begin
+  frmFeatures.Tag := 1;
   frmFeatures.ShowModal;
 end;
 
 procedure TfrmFilmBase.btnEditClick(Sender: TObject);
+var
+  Index: Integer;
+  CurrNode: PFilm;
 begin
-  lvFilmTab.ItemFocused
+  frmFeatures.Tag := 2;
+  Index := frmFilmBase.lvFilmTab.ItemIndex;
+  CurrNode := GetFilmByIndex(List,Index);
+
+  frmFeatures.edtTitle.Text := CurrNode.Item.Title;
+  frmFeatures.edtDirectorLastName.Text := CurrNode.Item.Director.LastName;
+  frmFeatures.edtDirectorName.Text := CurrNode.Item.Director.Name;
+  frmFeatures.edtDirectorMiddleName.Text := CurrNode.Item.Director.MiddleName;
+  frmFeatures.cmbbxGenre.ItemIndex := GetGenre(CurrNode.Item);
+  frmFeatures.edtCountry.Text := CurrNode.Item.Country;
+  frmFeatures.edtYear.Text := IntToStr(CurrNode.Item.Year);
+  frmFeatures.edtDuration.Text := IntToStr(CurrNode.Item.Duration);
+  frmFeatures.edtWords.Text := CurrNode.Item.Words;
+  frmFeatures.edtAwards.Text := CurrNode.Item.Awards;
+  frmFeatures.edtBudget.Text := CurrNode.Item.Budget;
+  frmFeatures.edtBoxOffice.Text := CurrNode.Item.BoxOffice;
+  frmFeatures.chbxReady.Checked := CurrNode.Item.Ready;
+  if CurrNode.Item.Ready then
+    frmFeatures.cmbbxRating.ItemIndex := GetRating(CurrNode.Item)
+  else
+    frmFeatures.cmbbxRating.ItemIndex := -1;
+
+  frmFeatures.ShowModal;
+end;
+
+function TfrmFilmBase.GetSelectIndex(): Integer;
+begin
+  Result := lvFilmTab.ItemIndex;
+end;
+
+procedure TfrmFilmBase.btnSelectClick(Sender: TObject);
+begin
+ if lvFilmTab.Checkboxes = False then
+  lvFilmTab.Checkboxes := True
+ else
+  lvFilmTab.Checkboxes := False;
 end;
 
 procedure TfrmFilmBase.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -56,8 +95,8 @@ end;
 
 procedure TfrmFilmBase.FormCreate(Sender: TObject);
 begin
-  List := TFilmList.Create(FILE_NAME);
-  UpdateTab(List);
+  List := TFilmList.Create;                  //
+  UpdateTab(List);                                      //
 end;
 
 procedure TfrmFilmBase.UpdateTab(List: TFilmList);
@@ -66,9 +105,8 @@ var
 begin
   lvFilmTab.Clear;
   CurrNode := List.Head;
-  while CurrNode{.Next} <> nil do
+  while CurrNode <> nil do
   begin
-
     with lvFilmTab.Items.Add do
     begin
       Caption := IntToStr(CurrNode^.Item.Index);
@@ -76,13 +114,19 @@ begin
       SubItems.Add(IntToStr(CurrNode^.Item.Year));
       SubItems.Add(CurrNode^.Item.Country);
       SubItems.Add(CurrNode^.Item.Director.LastName);
-      SubItems.Add(''{CurrNode^.Item.Genre});
+      SubItems.Add(TabGenre(CurrNode^.Item.Genre));
       SubItems.Add(IntToStr(CurrNode^.Item.Duration));;
       if CurrNode^.Item.Ready then
-        SubItems.Add('+')
+      begin
+        SubItems.Add('+');
+        SubItems.Add(IntToStr(CurrNode^.Item.Rating));
+      end
       else
-        SubItems.Add('');
-      SubItems.Add(IntToStr(CurrNode^.Item.Rating));
+      begin
+        SubItems.Add('-');
+        SubItems.Add('-')
+      end;
+
     end;
       CurrNode := CurrNode^.Next;
   end;

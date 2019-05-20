@@ -30,10 +30,10 @@ object frmFilmBase: TfrmFilmBase
     Align = alLeft
     Columns = <
       item
-        Caption = #8470
-        MaxWidth = 28
-        MinWidth = 28
-        Width = 28
+        Caption = #8470'    '
+        MaxWidth = 44
+        MinWidth = 44
+        Width = 44
       end
       item
         Caption = #1053#1072#1079#1074#1072#1085#1080#1077
@@ -83,6 +83,7 @@ object frmFilmBase: TfrmFilmBase
         MinWidth = 60
         Width = 75
       end>
+    GridLines = True
     RowSelect = True
     TabOrder = 0
     ViewStyle = vsReport
@@ -94,6 +95,7 @@ object frmFilmBase: TfrmFilmBase
     Height = 41
     Caption = #1042#1099#1073#1088#1072#1090#1100' '#1092#1080#1083#1100#1084#1099
     TabOrder = 1
+    OnClick = btnSelectClick
   end
   object btnAdd: TButton
     Left = 696

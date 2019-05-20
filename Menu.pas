@@ -37,8 +37,6 @@ end;
 
 procedure TfrmMenu.btnFilmBaseClick(Sender: TObject);
 begin
-{  frmFilmBase.Show;
-  frmMenu.Visible := False; }
   frmMenu.Hide;
   frmFilmBase.ShowModal;
 end;

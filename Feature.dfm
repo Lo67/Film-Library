@@ -18,28 +18,29 @@ object frmFeatures: TfrmFeatures
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object lblTitel: TLabel
     Left = 24
     Top = 24
-    Width = 48
+    Width = 57
     Height = 13
-    Caption = #1053#1072#1079#1074#1072#1085#1080#1077
+    Caption = #1053#1072#1079#1074#1072#1085#1080#1077' *'
   end
   object lblDirectorLastName: TLabel
     Left = 24
     Top = 80
-    Width = 44
+    Width = 53
     Height = 13
-    Caption = #1060#1080#1084#1080#1083#1080#1103
+    Caption = #1060#1080#1084#1080#1083#1080#1103' *'
   end
   object lblDirectorName: TLabel
     Left = 24
     Top = 107
-    Width = 19
+    Width = 28
     Height = 13
-    Caption = #1048#1084#1103
+    Caption = #1048#1084#1103' *'
   end
   object lblDirectorMiddleName: TLabel
     Left = 24
@@ -51,30 +52,30 @@ object frmFeatures: TfrmFeatures
   object lblGenre: TLabel
     Left = 24
     Top = 187
-    Width = 28
+    Width = 37
     Height = 13
-    Caption = #1046#1072#1085#1088
+    Caption = #1046#1072#1085#1088' *'
   end
   object lblCountry: TLabel
     Left = 24
     Top = 224
-    Width = 37
+    Width = 46
     Height = 13
-    Caption = #1057#1090#1088#1072#1085#1072
+    Caption = #1057#1090#1088#1072#1085#1072' *'
   end
   object lblYear: TLabel
     Left = 24
     Top = 259
-    Width = 19
+    Width = 28
     Height = 13
-    Caption = #1043#1086#1076
+    Caption = #1043#1086#1076' *'
   end
   object lblDuration: TLabel
     Left = 24
     Top = 296
-    Width = 73
+    Width = 82
     Height = 13
-    Caption = #1044#1083#1080#1090#1077#1083#1100#1085#1086#1089#1090#1100
+    Caption = #1044#1083#1080#1090#1077#1083#1100#1085#1086#1089#1090#1100' *'
   end
   object lblWords: TLabel
     Left = 24
@@ -130,6 +131,8 @@ object frmFeatures: TfrmFeatures
     Top = 21
     Width = 225
     Height = 21
+    MaxLength = 70
+    PopupMenu = PopupMenu1
     TabOrder = 0
   end
   object edtDirectorLastName: TEdit
@@ -137,6 +140,7 @@ object frmFeatures: TfrmFeatures
     Top = 77
     Width = 225
     Height = 21
+    PopupMenu = PopupMenu1
     TabOrder = 1
   end
   object edtDirectorName: TEdit
@@ -144,6 +148,7 @@ object frmFeatures: TfrmFeatures
     Top = 104
     Width = 225
     Height = 21
+    PopupMenu = PopupMenu1
     TabOrder = 2
   end
   object edtDirectorMiddleName: TEdit
@@ -151,6 +156,7 @@ object frmFeatures: TfrmFeatures
     Top = 131
     Width = 225
     Height = 21
+    PopupMenu = PopupMenu1
     TabOrder = 3
   end
   object edtCountry: TEdit
@@ -158,6 +164,7 @@ object frmFeatures: TfrmFeatures
     Top = 221
     Width = 225
     Height = 21
+    PopupMenu = PopupMenu1
     TabOrder = 4
   end
   object edtDuration: TEdit
@@ -165,6 +172,7 @@ object frmFeatures: TfrmFeatures
     Top = 293
     Width = 225
     Height = 21
+    PopupMenu = PopupMenu1
     TabOrder = 5
   end
   object edtWords: TEdit
@@ -172,6 +180,7 @@ object frmFeatures: TfrmFeatures
     Top = 328
     Width = 225
     Height = 21
+    PopupMenu = PopupMenu1
     TabOrder = 6
   end
   object edtAwards: TEdit
@@ -179,6 +188,7 @@ object frmFeatures: TfrmFeatures
     Top = 368
     Width = 225
     Height = 21
+    PopupMenu = PopupMenu1
     TabOrder = 7
   end
   object edtBudget: TEdit
@@ -186,6 +196,7 @@ object frmFeatures: TfrmFeatures
     Top = 405
     Width = 225
     Height = 21
+    PopupMenu = PopupMenu1
     TabOrder = 8
   end
   object edtBoxOffice: TEdit
@@ -193,6 +204,7 @@ object frmFeatures: TfrmFeatures
     Top = 448
     Width = 225
     Height = 21
+    PopupMenu = PopupMenu1
     TabOrder = 9
   end
   object btnCancel: TButton
@@ -202,6 +214,7 @@ object frmFeatures: TfrmFeatures
     Height = 25
     Caption = #1054#1090#1084#1077#1085#1072
     TabOrder = 10
+    OnClick = btnCancelClick
   end
   object btnOK: TButton
     Left = 84
@@ -264,12 +277,19 @@ object frmFeatures: TfrmFeatures
     Width = 17
     Height = 17
     TabOrder = 14
+    OnClick = chbxReadyClick
   end
   object edtYear: TEdit
     Left = 176
     Top = 256
     Width = 225
     Height = 21
+    PopupMenu = PopupMenu1
     TabOrder = 15
+    OnKeyPress = edtYearKeyPress
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 360
+    Top = 520
   end
 end
