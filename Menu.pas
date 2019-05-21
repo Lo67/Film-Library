@@ -34,6 +34,7 @@ uses
 procedure TfrmMenu.btnExitClick(Sender: TObject);
 begin
   frmMenu.Close;
+  List.Destroy;
 end;
 
 procedure TfrmMenu.btnFilmBaseClick(Sender: TObject);

@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, TypeList,
-  Feature;
+  Feature, FilmInfo;
 
 type
   TfrmFilmBase = class(TForm)
@@ -24,11 +24,11 @@ type
     procedure btnEditClick(Sender: TObject);
     procedure btnSelectClick(Sender: TObject);
     procedure btnDeleteClick(Sender: TObject);
-    procedure OnSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
-  private
-    { Private declarations }
+    procedure lvFilmTabOnClick(Sender: TObject);
+    procedure btnMenuClick(Sender: TObject);
+    procedure btnReportClick(Sender: TObject);
+    procedure ShowFilmInfo(Sender: TObject);
   public
-    // FilmList : TFilmList;
     procedure UpdateTab(List: TFilmList);
     function GetSelectIndex(): Integer;
   end;
@@ -127,25 +127,60 @@ begin
   Index := GetSelectIndex;
   CurrNode := List.GetFilmByIndex(Index);
 
-  frmFeatures.edtTitle.Text := CurrNode.Item.Title;
-  frmFeatures.edtDirectorLastName.Text := CurrNode.Item.Director.LastName;
-  frmFeatures.edtDirectorName.Text := CurrNode.Item.Director.Name;
-  frmFeatures.edtDirectorMiddleName.Text := CurrNode.Item.Director.MiddleName;
-  frmFeatures.cmbbxGenre.ItemIndex := frmFeatures.GetGenre(CurrNode.Item);
-  frmFeatures.edtCountry.Text := CurrNode.Item.Country;
-  frmFeatures.edtYear.Text := IntToStr(CurrNode.Item.Year);
-  frmFeatures.edtDuration.Text := IntToStr(CurrNode.Item.Duration);
-  frmFeatures.edtWords.Text := CurrNode.Item.Words;
-  frmFeatures.edtAwards.Text := CurrNode.Item.Awards;
-  frmFeatures.edtBudget.Text := CurrNode.Item.Budget;
-  frmFeatures.edtBoxOffice.Text := CurrNode.Item.BoxOffice;
-  frmFeatures.chbxReady.Checked := CurrNode.Item.Ready;
-  if CurrNode.Item.Ready then
-    frmFeatures.cmbbxRating.ItemIndex := frmFeatures.GetRating(CurrNode.Item)
-  else
-    frmFeatures.cmbbxRating.ItemIndex := -1;
+  with frmFeatures do
+  begin
+    edtTitle.Text := CurrNode.Item.Title;
+    edtDirectorLastName.Text := CurrNode.Item.Director.LastName;
+    edtDirectorName.Text := CurrNode.Item.Director.Name;
+    edtDirectorMiddleName.Text := CurrNode.Item.Director.MiddleName;
+    cmbbxGenre.ItemIndex := frmFeatures.GetGenre(CurrNode.Item);
+    edtCountry.Text := CurrNode.Item.Country;
+    edtYear.Text := IntToStr(CurrNode.Item.Year);
+    edtDuration.Text := IntToStr(CurrNode.Item.Duration);
+    edtWords.Text := CurrNode.Item.Words;
+    edtAwards.Text := CurrNode.Item.Awards;
+    edtBudget.Text := CurrNode.Item.Budget;
+    edtBoxOffice.Text := CurrNode.Item.BoxOffice;
+    chbxReady.Checked := CurrNode.Item.Ready;
+    if CurrNode.Item.Ready then
+      cmbbxRating.ItemIndex := frmFeatures.GetRating(CurrNode.Item)
+    else
+      cmbbxRating.ItemIndex := -1;
+  end;
 
   frmFeatures.ShowModal;
+end;
+
+procedure TfrmFilmBase.btnMenuClick(Sender: TObject);
+begin
+  frmFilmBase.Close;
+  frmMenu.Show;
+end;
+
+procedure TfrmFilmBase.btnReportClick(Sender: TObject);
+var
+  CurrNode : PFilm;
+  Index : Integer;
+  F: TextFile;
+  FileName : string;
+begin
+  Index := GetSelectIndex;
+  CurrNode := List.GetFilmByIndex(Index);
+
+  FileName := InputBox('', 'Пожалуйста, введите имя файла','FilmsReport');
+  FileName := 'D:\1 Stady\OAiP\Labs\' + FileName + '.txt';
+
+  AssignFile (F, FileName);
+  Rewrite(F);
+
+  Write(F, CurrNode.Item.Title, ', ', CurrNode.Item.Year, ', ',
+        CurrNode.Item.Country,', ',frmFeatures.TabGenre(CurrNode.Item.Genre),
+        ', ',CurrNode.Item.Director.Name,' ',
+        CurrNode.Item.Director.LastName);
+
+  CloseFile(F);
+
+  MessageBox(Handle,PChar('Отчёт успешно создан!'),PChar('Внимание!'), MB_OK);
 end;
 
 function TfrmFilmBase.GetSelectIndex(): Integer;
@@ -153,13 +188,44 @@ begin
   Result := lvFilmTab.ItemIndex;
 end;
 
-
-procedure TfrmFilmBase.OnSelectItem(Sender: TObject; Item: TListItem;
-  Selected: Boolean);
+procedure TfrmFilmBase.lvFilmTabOnClick(Sender: TObject);
 begin
-  frmFilmBase.btnEdit.Enabled := True;
-  frmFilmBase.btnDelete.Enabled := True;
-  frmFilmBase.btnReport.Enabled := True;
+  frmFilmBase.btnEdit.Enabled := lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnDelete.Enabled := lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnReport.Enabled := lvFilmTab.ItemIndex <> -1;
+end;
+
+procedure TfrmFilmBase.ShowFilmInfo(Sender: TObject);
+var
+  Index: Integer;
+  CurrNode: PFilm;
+begin
+  Index := GetSelectIndex;
+  CurrNode := List.GetFilmByIndex(Index);
+  with frmFilmInfo do
+  begin
+    lblRealTitel.Caption := CurrNode.Item.Title;
+    lblRealDirectorLastName.Caption := CurrNode.Item.Director.LastName;
+    lblRealDirectorName.Caption := CurrNode.Item.Director.Name;
+    lblRealDirectorMiddleName.Caption := CurrNode.Item.Director.MiddleName;
+    lblRealGenre.Caption := frmFeatures.TabGenre(CurrNode.Item.Genre);
+    lblRealCountry.Caption := CurrNode.Item.Country;
+    lblRealYear.Caption := IntToStr(CurrNode.Item.Year);
+    lblRealDuration.Caption := IntToStr(CurrNode.Item.Duration);
+    lblRealWords.Caption := CurrNode.Item.Words;
+    lblRealAwards.Caption := CurrNode.Item.Awards;
+    lblRealBudget.Caption := CurrNode.Item.Budget;
+    lblRealBoxOffice.Caption := CurrNode.Item.BoxOffice;
+    chbxReady.Checked := CurrNode.Item.Ready;
+    chbxReady.Enabled := False;
+    if CurrNode.Item.Ready then
+      lblRealRating.Caption := IntToStr(CurrNode.Item.Rating)
+    else
+      lblRealRating.Caption := '';
+  end;
+
+  frmFilmInfo.ShowModal;
+
 end;
 
 end.

@@ -2,21 +2,23 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2019-05-16 00:36:45.000.918,=D:\1 Stady\OAiP\Unit1.pas</Transaction>
-    <Transaction>2019-05-16 00:37:10.000.385,D:\1 Stady\OAiP\Unit1.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Menu.pas</Transaction>
-    <Transaction>2019-05-16 00:37:10.000.385,D:\1 Stady\OAiP\Unit1.dfm=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Menu.dfm</Transaction>
-    <Transaction>2019-05-16 00:37:53.000.575,D:\1 Stady\OAiP\Project1.dproj=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\MyLibray.dproj</Transaction>
+    <Transaction>2019-05-16 00:37:10.000.385,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Menu.dfm=D:\1 Stady\OAiP\Unit1.dfm</Transaction>
+    <Transaction>2019-05-16 00:37:10.000.385,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Menu.pas=D:\1 Stady\OAiP\Unit1.pas</Transaction>
+    <Transaction>2019-05-16 00:37:53.000.575,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\MyLibray.dproj=D:\1 Stady\OAiP\Project1.dproj</Transaction>
     <Transaction>2019-05-16 00:39:05.000.116,=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas</Transaction>
-    <Transaction>2019-05-16 00:40:02.000.653,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.dfm=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\FilmBase.dfm</Transaction>
-    <Transaction>2019-05-16 00:40:02.000.653,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\FilmBase.pas</Transaction>
+    <Transaction>2019-05-16 00:40:02.000.653,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\FilmBase.dfm=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.dfm</Transaction>
+    <Transaction>2019-05-16 00:40:02.000.653,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\FilmBase.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas</Transaction>
     <Transaction>2019-05-16 00:45:32.000.123,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\FilmBase.pas=</Transaction>
     <Transaction>2019-05-16 00:45:56.000.493,=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas</Transaction>
-    <Transaction>2019-05-16 00:47:30.000.304,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.dfm=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\FilmBase.dfm</Transaction>
-    <Transaction>2019-05-16 00:47:30.000.304,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\FilmBase.pas</Transaction>
+    <Transaction>2019-05-16 00:47:30.000.304,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\FilmBase.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas</Transaction>
+    <Transaction>2019-05-16 00:47:30.000.304,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\FilmBase.dfm=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.dfm</Transaction>
     <Transaction>2019-05-16 10:44:37.000.318,=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas</Transaction>
-    <Transaction>2019-05-16 10:46:08.000.577,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\OperationList.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas</Transaction>
+    <Transaction>2019-05-16 10:46:08.000.577,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\OperationList.pas</Transaction>
     <Transaction>2019-05-16 10:48:09.000.039,=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas</Transaction>
-    <Transaction>2019-05-16 10:49:15.000.049,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\InfoList.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas</Transaction>
+    <Transaction>2019-05-16 10:49:15.000.049,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Unit1.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\InfoList.pas</Transaction>
     <Transaction>2019-05-16 18:32:33.000.337,=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\Feature.pas</Transaction>
-    <Transaction>2019-05-16 18:53:51.000.271,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\InfoList.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\TypeList.pas</Transaction>
+    <Transaction>2019-05-16 18:53:51.000.271,D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\TypeList.pas=D:\1 Stady\OAiP\КУРСАЧ\MyProgram\Курсовой проект 2.0\InfoList.pas</Transaction>
+    <Transaction>2019-05-22 00:53:23.658,=D:\1 Stady\OAiP\КУРСАЧ\Film-Library-master\Unit1.pas</Transaction>
+    <Transaction>2019-05-22 01:00:51.154,=D:\1 Stady\OAiP\КУРСАЧ\Film-Library-master\FilmInfo.pas</Transaction>
   </Transactions>
 </BorlandProject>

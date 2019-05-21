@@ -85,9 +85,11 @@ object frmFilmBase: TfrmFilmBase
       end>
     GridLines = True
     RowSelect = True
+    SortType = stText
     TabOrder = 0
     ViewStyle = vsReport
-    OnSelectItem = OnSelectItem
+    OnClick = lvFilmTabOnClick
+    OnDblClick = ShowFilmInfo
   end
   object btnSelect: TButton
     Left = 696
@@ -132,6 +134,7 @@ object frmFilmBase: TfrmFilmBase
     Height = 41
     Caption = #1054#1090#1095#1105#1090
     TabOrder = 5
+    OnClick = btnReportClick
   end
   object btnSearch: TButton
     Left = 696
@@ -148,5 +151,6 @@ object frmFilmBase: TfrmFilmBase
     Height = 41
     Caption = #1052#1077#1085#1102
     TabOrder = 7
+    OnClick = btnMenuClick
   end
 end
