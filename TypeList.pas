@@ -243,4 +243,10 @@ begin
   Result := CurrNode;
 end;
 
+procedure Proc ();
+var
+  T: PChar;
+begin
+
+end;
 end.

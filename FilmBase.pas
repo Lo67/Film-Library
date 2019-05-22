@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, TypeList,
-  Feature, FilmInfo;
+  Feature, FilmInfo, Vcl.ExtDlgs;
 
 type
   TfrmFilmBase = class(TForm)
@@ -18,6 +18,7 @@ type
     btnReport: TButton;
     btnSearch: TButton;
     btnMenu: TButton;
+    SaveReport: TSaveTextFileDialog;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnAddClick(Sender: TObject);
@@ -115,7 +116,11 @@ var
 begin
   Index := GetselectIndex + 1;
   List.DeleteFilm(Index);
+  List.SaveList(FILE_NAME);
   UpdateTab(List);
+  frmFilmBase.btnEdit.Enabled := lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnDelete.Enabled := lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnReport.Enabled := lvFilmTab.ItemIndex <> -1;
 end;
 
 procedure TfrmFilmBase.btnEditClick(Sender: TObject);
@@ -148,6 +153,9 @@ begin
       cmbbxRating.ItemIndex := -1;
   end;
 
+  frmFilmBase.btnEdit.Enabled := lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnDelete.Enabled := lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnReport.Enabled := lvFilmTab.ItemIndex <> -1;
   frmFeatures.ShowModal;
 end;
 
@@ -162,25 +170,22 @@ var
   CurrNode : PFilm;
   Index : Integer;
   F: TextFile;
-  FileName : string;
+  temp : Word;
 begin
   Index := GetSelectIndex;
   CurrNode := List.GetFilmByIndex(Index);
 
-  FileName := InputBox('', 'Пожалуйста, введите имя файла','FilmsReport');
-  FileName := 'D:\1 Stady\OAiP\Labs\' + FileName + '.txt';
-
-  AssignFile (F, FileName);
-  Rewrite(F);
-
-  Write(F, CurrNode.Item.Title, ', ', CurrNode.Item.Year, ', ',
-        CurrNode.Item.Country,', ',frmFeatures.TabGenre(CurrNode.Item.Genre),
-        ', ',CurrNode.Item.Director.Name,' ',
-        CurrNode.Item.Director.LastName);
-
-  CloseFile(F);
-
-  MessageBox(Handle,PChar('Отчёт успешно создан!'),PChar('Внимание!'), MB_OK);
+  if SaveReport.Execute then
+  begin
+    AssignFile (F, SaveReport.FileName{ + '.txt'});
+    Rewrite(F);
+    Write(F, CurrNode.Item.Title, ', ', CurrNode.Item.Year, ', ',
+          CurrNode.Item.Country,', ',frmFeatures.TabGenre(CurrNode.Item.Genre),
+          ', ',CurrNode.Item.Director.Name,' ',
+          CurrNode.Item.Director.LastName);
+    CloseFile(F);
+    MessageBox(Handle,PChar('Отчёт успешно создан!'),PChar('Внимание!'), MB_OK);
+  end;
 end;
 
 function TfrmFilmBase.GetSelectIndex(): Integer;
@@ -223,9 +228,7 @@ begin
     else
       lblRealRating.Caption := '';
   end;
-
   frmFilmInfo.ShowModal;
-
 end;
 
 end.

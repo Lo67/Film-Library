@@ -153,4 +153,9 @@ object frmFilmBase: TfrmFilmBase
     TabOrder = 7
     OnClick = btnMenuClick
   end
+  object SaveReport: TSaveTextFileDialog
+    Filter = 'Text file (*.txt)|*.txt'
+    Left = 344
+    Top = 256
+  end
 end

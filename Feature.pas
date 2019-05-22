@@ -237,10 +237,10 @@ end;
 
 procedure TfrmFeatures.edtYearKeyPress(Sender: TObject; var Key: Char);
 const
-  Digits = ['0' .. '9'];
+  Digits = ['0' .. '9', #8];
 begin
   if not(Key in Digits) then
-    Key := #0; // Не работает BackSpace
+    Key := #0;
 end;
 
 { Определение значения ComboBox по рейтингу из списка }

@@ -284,7 +284,10 @@ object frmFeatures: TfrmFeatures
     Top = 256
     Width = 225
     Height = 21
+    MaxLength = 4
+    ParentShowHint = False
     PopupMenu = PopupMenu1
+    ShowHint = False
     TabOrder = 15
     OnKeyPress = edtYearKeyPress
   end
