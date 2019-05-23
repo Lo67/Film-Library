@@ -30,6 +30,22 @@ begin
       Result := False;
 end;
 
+function LowCase (Str : string): string;
+var
+  i: Integer;
+begin
+  Result := '';
+  for i := 1 to Length(Str) do
+    case Str[i] of
+      'A'..'Z':
+        Result := Result + Chr(Ord(Str[i]) + 32);
+      'А'..'Я':
+        Result := Result + Chr(Ord(Str[i]) + 32);
+      else
+        Result := Result + Str[i];
+    end;
+end;
+
 { Поиск по названию}
 procedure SearchByTitle(Str : string);
 var
@@ -41,7 +57,7 @@ begin
   CurrNode := List.Head;
   while CurrNode <> nil do
   begin
-    if CompareStirng(CurrNode.Item.Title, Str) then
+    if CompareStirng(LowCase(CurrNode.Item.Title), LowCase(Str)) then
     begin
       isExist := True;
       frmFilmBase.DrawOneFilm(CurrNode);
@@ -95,7 +111,7 @@ begin
   CurrNode := List.Head;
   while CurrNode <> nil do
   begin
-    if CompareStirng(CurrNode.Item.Country, Str) then
+    if CompareStirng(LowCase(CurrNode.Item.Country), LowCase(Str)) then
     begin
       isExist := True;
       frmFilmBase.DrawOneFilm(CurrNode);
@@ -125,7 +141,7 @@ begin
     StrList := CurrNode.Item.Director.LastName +
                CurrNode.Item.Director.Name +
                CurrNode.Item.Director.MiddleName;
-    if CompareStirng(StrList, Str) then
+    if CompareStirng(LowCase(StrList), LowCase(Str)) then
     begin
       isExist := True;
       frmFilmBase.DrawOneFilm(CurrNode);
@@ -151,7 +167,7 @@ begin
   CurrNode := List.Head;
   while CurrNode <> nil do
   begin
-    if CompareStirng(CurrNode.Item.Words, Str) then
+    if CompareStirng(LowCase(CurrNode.Item.Words), LowCase(Str)) then
     begin
       isExist := True;
       frmFilmBase.DrawOneFilm(CurrNode);

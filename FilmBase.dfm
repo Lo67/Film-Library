@@ -25,15 +25,15 @@ object frmFilmBase: TfrmFilmBase
   object lvFilmTab: TListView
     Left = 0
     Top = 0
-    Width = 665
+    Width = 674
     Height = 465
     Align = alLeft
     Columns = <
       item
         Caption = #8470'    '
-        MaxWidth = 44
-        MinWidth = 44
-        Width = 44
+        MaxWidth = 50
+        MinWidth = 46
+        Width = 46
       end
       item
         Caption = #1053#1072#1079#1074#1072#1085#1080#1077
@@ -43,9 +43,9 @@ object frmFilmBase: TfrmFilmBase
       end
       item
         Caption = #1043#1086#1076
-        MaxWidth = 75
-        MinWidth = 75
-        Width = 75
+        MaxWidth = 70
+        MinWidth = 70
+        Width = 70
       end
       item
         Caption = #1057#1090#1088#1072#1085#1072
@@ -92,65 +92,66 @@ object frmFilmBase: TfrmFilmBase
     OnColumnClick = lvFilmTabColumnClick
     OnCompare = lvFilmTabCompare
     OnDblClick = ShowFilmInfo
+    OnItemChecked = lvFilmTabItemChecked
   end
   object btnSelect: TButton
-    Left = 696
-    Top = 24
-    Width = 129
+    Left = 699
+    Top = 25
+    Width = 126
     Height = 41
     Caption = #1042#1099#1073#1088#1072#1090#1100' '#1092#1080#1083#1100#1084#1099
     TabOrder = 1
     OnClick = btnSelectClick
   end
   object btnAdd: TButton
-    Left = 696
-    Top = 80
-    Width = 129
+    Left = 699
+    Top = 81
+    Width = 126
     Height = 41
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100
     TabOrder = 2
     OnClick = btnAddClick
   end
   object btnEdit: TButton
-    Left = 696
-    Top = 136
-    Width = 129
+    Left = 699
+    Top = 137
+    Width = 126
     Height = 41
     Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
     TabOrder = 3
     OnClick = btnEditClick
   end
   object btnDelete: TButton
-    Left = 696
-    Top = 192
-    Width = 129
+    Left = 699
+    Top = 193
+    Width = 126
     Height = 41
     Caption = #1059#1076#1072#1083#1080#1090#1100
     TabOrder = 4
     OnClick = btnDeleteClick
   end
   object btnReport: TButton
-    Left = 696
-    Top = 248
-    Width = 129
+    Left = 699
+    Top = 249
+    Width = 126
     Height = 41
     Caption = #1054#1090#1095#1105#1090
     TabOrder = 5
     OnClick = btnReportClick
   end
   object btnSearch: TButton
-    Left = 696
-    Top = 304
-    Width = 129
+    Left = 699
+    Top = 305
+    Width = 126
     Height = 41
     Caption = #1055#1086#1080#1089#1082
     TabOrder = 6
     OnClick = btnSearchClick
   end
   object btnMenu: TButton
-    Left = 696
-    Top = 400
-    Width = 129
+    Left = 699
+    Top = 401
+    Width = 126
     Height = 41
     Caption = #1052#1077#1085#1102
     TabOrder = 7
@@ -164,6 +165,8 @@ object frmFilmBase: TfrmFilmBase
     Align = alRight
     TabOrder = 8
     Visible = False
+    ExplicitLeft = 399
+    ExplicitTop = -8
     object lblHint1: TLabel
       Left = 16
       Top = 24
@@ -183,6 +186,7 @@ object frmFilmBase: TfrmFilmBase
       Top = 53
       Width = 145
       Height = 21
+      Style = csDropDownList
       TabOrder = 0
       Items.Strings = (
         #1087#1086' '#1085#1072#1079#1074#1072#1085#1080#1102' '
@@ -215,11 +219,12 @@ object frmFilmBase: TfrmFilmBase
       Height = 25
       Caption = #1053#1072#1079#1072#1076
       TabOrder = 3
+      OnClick = btnBackClick
     end
   end
   object SaveReport: TSaveTextFileDialog
     Filter = 'Text file (*.txt)|*.txt'
-    Left = 344
-    Top = 256
+    Left = 424
+    Top = 248
   end
 end

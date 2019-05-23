@@ -7,7 +7,7 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls {System.Classes,} ,
   TypeList,
-  Vcl.Menus;
+  Vcl.Menus, FilmBase;
 
 type
   TfrmFilmInfo = class(TForm)
@@ -41,6 +41,7 @@ type
     lblRealBudget: TLabel;
     lblRealBoxOffice: TLabel;
     lblRealRating: TLabel;
+    procedure btnOKClick(Sender: TObject);
   end;
 
 var
@@ -51,5 +52,13 @@ implementation
 {$R *.dfm}
 
 
+
+procedure TfrmFilmInfo.btnOKClick(Sender: TObject);
+begin
+  frmFilmInfo.Close;
+  frmFilmBase.btnEdit.Enabled := frmFilmBase.lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnDelete.Enabled := frmFilmBase.lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnReport.Enabled := frmFilmBase.lvFilmTab.ItemIndex <> -1;
+end;
 
 end.

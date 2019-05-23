@@ -229,6 +229,7 @@ object frmFilmInfo: TfrmFilmInfo
     Height = 25
     Caption = #1054#1050
     TabOrder = 0
+    OnClick = btnOKClick
   end
   object chbxReady: TCheckBox
     Left = 192

@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, TypeList,
-  Feature, FilmInfo, Vcl.ExtDlgs,  Vcl.ExtCtrls;
+  Vcl.ExtDlgs,  Vcl.ExtCtrls;
 
 type
   TfrmFilmBase = class(TForm)
@@ -42,6 +42,8 @@ type
     procedure btnSearchClick(Sender: TObject);
     function cmbbxSearchCriteriaChange(Sender: TObject) : Integer;
     procedure btnSearchFilmClick(Sender: TObject);
+    procedure btnBackClick(Sender: TObject);
+    procedure lvFilmTabItemChecked(Sender: TObject; Item: TListItem);
   public
     procedure UpdateTab(List: TFilmList);
     procedure DrawOneFilm(CurrNode : PFilm);
@@ -61,7 +63,7 @@ implementation
 {$R *.dfm}
 
 uses
-  Menu, UnitAlgoritms;
+  Menu, UnitAlgoritms, FilmInfo, Feature;
 
 procedure TfrmFilmBase.FormCreate(Sender: TObject);
 begin
@@ -143,7 +145,6 @@ begin
       4: SearchByWords(edtSearch.Text);
       5: SearchByDuration(edtSearch.Text);
     end;
-
 end;
 
 procedure TfrmFilmBase.btnSelectClick(Sender: TObject);
@@ -152,10 +153,15 @@ begin
   if lvFilmTab.Checkboxes = False then
   begin
     lvFilmTab.Checkboxes := True;
+    lvFilmTab.RowSelect := False;
+    btnEdit.Enabled := False;
+    frmFeatures.Tag := 3;
   end
   else
   begin
     lvFilmTab.Checkboxes := False;
+    lvFilmTab.RowSelect := True;
+    frmFeatures.Tag := 0;
   end;
 end;
 
@@ -167,14 +173,40 @@ begin
   frmFeatures.ShowModal;
 end;
 
+procedure TfrmFilmBase.btnBackClick(Sender: TObject);
+begin
+  UpdateTab(List);
+  pnlSearch.Visible := False;
+end;
+
 procedure TfrmFilmBase.btnDeleteClick(Sender: TObject);
 var
   Index: Integer;
+  i : Integer;
+  Answer : Word;
 begin
-  Index := GetSelectIndex + 1;
-  List.DeleteFilm(Index);
-  List.SaveList(FILE_NAME);
-  UpdateTab(List);
+  Answer := MessageBox(Handle, PChar('Вы действительно хотите удалить фильмы? Отменить данное действие будет НЕВОЗМОЖНО!'),
+    PChar('ВНИМАНИЕ!'), MB_OKCANCEL);
+  if Answer = 1 then
+  begin
+    if frmFeatures.Tag = 3 then
+    begin
+      for i := 0 to List.fICount-1 do
+        if lvFilmTab.Items[i].Checked then
+        begin
+          Index := StrToInt(lvFilmTab.Items[i].Caption)-1;
+          List.DeleteFilm(Index);
+        end;
+    end
+    else
+    begin
+      Index := GetSelectIndex + 1;
+      List.DeleteFilm(Index);
+    end;
+    List.SaveList(FILE_NAME);
+    UpdateTab(List);
+  end;
+
   frmFilmBase.btnEdit.Enabled := lvFilmTab.ItemIndex <> -1;
   frmFilmBase.btnDelete.Enabled := lvFilmTab.ItemIndex <> -1;
   frmFilmBase.btnReport.Enabled := lvFilmTab.ItemIndex <> -1;
@@ -225,23 +257,46 @@ end;
 procedure TfrmFilmBase.btnReportClick(Sender: TObject);
 var
   CurrNode: PFilm;
-  Index: Integer;
+  Index, i: Integer;
   F: TextFile;
   temp: Word;
 begin
-  Index := GetSelectIndex;
-  CurrNode := List.GetFilmByIndex(Index);
-
-  if SaveReport.Execute then
+  if frmFeatures.Tag = 3 then
   begin
-    AssignFile(F, SaveReport.FileName { + '.txt' } );
-    Rewrite(F);
-    Write(F, CurrNode.Item.Title, ', ', CurrNode.Item.Year, ', ',
-      CurrNode.Item.Country, ', ', frmFeatures.TabGenre(CurrNode.Item.Genre),
-      ', ', CurrNode.Item.Director.Name, ' ', CurrNode.Item.Director.LastName);
-    CloseFile(F);
-    MessageBox(Handle, PChar('Отчёт успешно создан!'),
-      PChar('Внимание!'), MB_OK);
+    if SaveReport.Execute then
+    begin
+      AssignFile(F, SaveReport.FileName+'.txt');
+      Rewrite(F);
+      for i := 0 to List.fICount-1 do
+        if lvFilmTab.Items[i].Checked then
+        begin
+          Index := StrToInt(lvFilmTab.Items[i].Caption)-1;
+          CurrNode := List.GetFilmByIndex(Index);
+          Write(F, CurrNode.Item.Index, '. ',CurrNode.Item.Title, ', ', CurrNode.Item.Year, ', ',
+                CurrNode.Item.Country, ', ', frmFeatures.TabGenre(CurrNode.Item.Genre),
+                '. Режиссер: ', CurrNode.Item.Director.Name, ' ',
+                 CurrNode.Item.Director.LastName,'.',#13#10);
+        end;
+      CloseFile(F);
+      MessageBox(Handle, PChar('Отчёт успешно создан!'),
+        PChar('Внимание!'), MB_OK);
+    end;
+  end
+  else
+  begin
+    Index := GetSelectIndex;
+    CurrNode := List.GetFilmByIndex(Index);
+    if SaveReport.Execute then
+    begin
+      AssignFile(F, SaveReport.FileName+'.txt');
+      Rewrite(F);
+      Write(F, CurrNode.Item.Title, ', ', CurrNode.Item.Year, ', ',
+        CurrNode.Item.Country, ', ', frmFeatures.TabGenre(CurrNode.Item.Genre),
+        '. Режиссер: ', CurrNode.Item.Director.Name, ' ', CurrNode.Item.Director.LastName,'.');
+      CloseFile(F);
+      MessageBox(Handle, PChar('Отчёт успешно создан!'),
+        PChar('Внимание!'), MB_OK);
+    end;
   end;
 end;
 
@@ -256,9 +311,18 @@ end;
 
 procedure TfrmFilmBase.lvFilmTabOnClick(Sender: TObject);
 begin
-  frmFilmBase.btnEdit.Enabled := lvFilmTab.ItemIndex <> -1;
-  frmFilmBase.btnDelete.Enabled := lvFilmTab.ItemIndex <> -1;
-  frmFilmBase.btnReport.Enabled := lvFilmTab.ItemIndex <> -1;
+  if frmFeatures.Tag = 3 then
+  begin
+    frmFilmBase.btnEdit.Enabled := True;
+    frmFilmBase.btnDelete.Enabled := True;
+    frmFilmBase.btnReport.Enabled := True;
+  end
+  else
+  begin
+    frmFilmBase.btnEdit.Enabled := lvFilmTab.ItemIndex <> -1;
+    frmFilmBase.btnDelete.Enabled := lvFilmTab.ItemIndex <> -1;
+    frmFilmBase.btnReport.Enabled := lvFilmTab.ItemIndex <> -1;
+  end;
 end;
 
 procedure TfrmFilmBase.ShowFilmInfo(Sender: TObject);
@@ -325,6 +389,15 @@ begin
       Item2.SubItems[SortedColumn - 1]);
   if not Descending then
     Compare := -Compare;
+end;
+
+procedure TfrmFilmBase.lvFilmTabItemChecked(Sender: TObject; Item: TListItem);
+begin
+  frmFilmBase.btnEdit.Enabled := True;
+  frmFilmBase.btnDelete.Enabled := True;
+  frmFilmBase.btnReport.Enabled := True;
+
+  frmFeatures.Tag := 3;
 end;
 
 procedure TfrmFilmBase.DrawOneFilm(CurrNode : PFilm);

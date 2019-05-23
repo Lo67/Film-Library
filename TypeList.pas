@@ -192,7 +192,7 @@ begin
       if FilmIndex > 1 then
       begin
         PrevNode := Head;
-        while PrevNode.Item.Index <> FilmIndex - 1 do
+        while PrevNode.Item.Index <> FilmIndex - 1 do    ////////////////////!!!!!!!!!!
           PrevNode := PrevNode.Next;
         CurrNode := PrevNode.Next;
         PrevNode.Next := CurrNode.Next;

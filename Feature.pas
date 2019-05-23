@@ -6,8 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls {System.Classes,} ,
-  TypeList,
-  Vcl.Menus;
+  TypeList, Vcl.Menus, FilmBase;
 
 type
   TfrmFeatures = class(TForm)
@@ -63,9 +62,6 @@ var
 
 implementation
 
-uses
-  FilmBase;
-
 {$R *.dfm}
 
 procedure TfrmFeatures.FormCreate(Sender: TObject);
@@ -109,6 +105,9 @@ procedure TfrmFeatures.btnCancelClick(Sender: TObject);
 begin
   ClearFeaturesEdits;
   frmFeatures.Close;
+  frmFilmBase.btnEdit.Enabled := frmFilmBase.lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnDelete.Enabled := frmFilmBase.lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnReport.Enabled := frmFilmBase.lvFilmTab.ItemIndex <> -1;
 end;
 
 procedure TfrmFeatures.btnOKClick(Sender: TObject);
@@ -140,28 +139,39 @@ begin
         Duration := StrToInt(edtDuration.Text);
         Words := edtWords.Text;
         Awards := edtAwards.Text;
-        Budget := edtBudget.Text;
-        BoxOffice := edtBoxOffice.Text;
+        if edtBudget.Text = ' млн. $' then
+          Budget := ''
+        else
+          Budget := edtBudget.Text;
+        if edtBoxOffice.Text = ' $' then
+          BoxOffice := ''
+        else
+          BoxOffice := edtBoxOffice.Text;
         Ready := chbxReady.Checked;
         if Info.Ready then
           Info.Rating := cmbbxRatingChange(cmbbxRating);
       end;
+
+
+      if frmFeatures.Tag = 1 then
+        List.CreateFilm(Info)
+      else
+      begin
+        Index := frmFilmBase.GetSelectIndex;
+        List.EditFilm(Info, Index);
+      end;
+
+      frmFilmBase.UpdateTab(List);
+      List.SaveList(FILE_NAME);
+
+      ClearFeaturesEdits;
+      frmFeatures.Tag := 0;
+      frmFeatures.Close;
     end;
 
-  if frmFeatures.Tag = 1 then
-    List.CreateFilm(Info)
-  else
-  begin
-    Index := frmFilmBase.GetSelectIndex;
-    List.EditFilm(Info, Index);
-  end;
-
-  frmFilmBase.UpdateTab(List);
-  List.SaveList(FILE_NAME);
-
-  ClearFeaturesEdits;
-  frmFeatures.Tag := 0;
-  frmFeatures.Close;
+  frmFilmBase.btnEdit.Enabled := frmFilmBase.lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnDelete.Enabled := frmFilmBase.lvFilmTab.ItemIndex <> -1;
+  frmFilmBase.btnReport.Enabled := frmFilmBase.lvFilmTab.ItemIndex <> -1;
 end;
 
 { Определение жанра по значению из ComboBox }
