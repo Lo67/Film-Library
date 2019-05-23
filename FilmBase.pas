@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, TypeList,
-  Feature, FilmInfo, Vcl.ExtDlgs;
+  Feature, FilmInfo, Vcl.ExtDlgs,  Vcl.ExtCtrls;
 
 type
   TfrmFilmBase = class(TForm)
@@ -19,6 +19,13 @@ type
     btnSearch: TButton;
     btnMenu: TButton;
     SaveReport: TSaveTextFileDialog;
+    cmbbxSearchCriteria: TComboBox;
+    edtSearch: TEdit;
+    lblHint1: TLabel;
+    lblHint2: TLabel;
+    pnlSearch: TPanel;
+    btnSearchFilm: TButton;
+    btnBack: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnAddClick(Sender: TObject);
@@ -32,9 +39,14 @@ type
     procedure lvFilmTabColumnClick(Sender: TObject; Column: TListColumn);
     procedure lvFilmTabCompare(Sender: TObject; Item1, Item2: TListItem;
       Data: Integer; var Compare: Integer);
+    procedure btnSearchClick(Sender: TObject);
+    function cmbbxSearchCriteriaChange(Sender: TObject) : Integer;
+    procedure btnSearchFilmClick(Sender: TObject);
   public
     procedure UpdateTab(List: TFilmList);
+    procedure DrawOneFilm(CurrNode : PFilm);
     function GetSelectIndex: Integer;
+    procedure Mistake;
   private
     Descending: Boolean;
     SortedColumn: Integer;
@@ -49,7 +61,7 @@ implementation
 {$R *.dfm}
 
 uses
-  Menu;
+  Menu, UnitAlgoritms;
 
 procedure TfrmFilmBase.FormCreate(Sender: TObject);
 begin
@@ -99,13 +111,47 @@ begin
   lvFilmTab.Items.EndUpdate;
 end;
 
+function TfrmFilmBase.cmbbxSearchCriteriaChange(Sender: TObject) : Integer;
+begin
+
+  case cmbbxSearchCriteria.ItemIndex of
+    0: Result := 0;
+    1: Result := 1;
+    2: Result := 2;
+    3: Result := 3;
+    4: Result := 4;
+    5: Result := 5;
+  end;
+end;
+
+procedure TfrmFilmBase.btnSearchClick(Sender: TObject);
+begin
+  pnlSearch.Visible := True;
+end;
+
+procedure TfrmFilmBase.btnSearchFilmClick(Sender: TObject);
+begin
+    if (cmbbxSearchCriteria.ItemIndex= -1) or (edtSearch.Text = '') then
+      MessageBox(Handle, PChar('Не все необходимые поля заполнены!'),
+        PChar('ВНИМАНИЕ!'), MB_ICONWARNING + MB_OK)
+    else
+    case cmbbxSearchCriteria.ItemIndex of
+      0: SearchByTitle(edtSearch.Text);
+      1: SearchByYear(edtSearch.Text);
+      2: SearchByCountry(edtSearch.Text);
+      3: SearchByDirector(edtSearch.Text);
+      4: SearchByWords(edtSearch.Text);
+      5: SearchByDuration(edtSearch.Text);
+    end;
+
+end;
+
 procedure TfrmFilmBase.btnSelectClick(Sender: TObject);
 begin
 
   if lvFilmTab.Checkboxes = False then
   begin
     lvFilmTab.Checkboxes := True;
-
   end
   else
   begin
@@ -207,6 +253,7 @@ begin
   Result := StrToInt(lvFilmTab.Items[Index].Caption) - 1;
 end;
 
+
 procedure TfrmFilmBase.lvFilmTabOnClick(Sender: TObject);
 begin
   frmFilmBase.btnEdit.Enabled := lvFilmTab.ItemIndex <> -1;
@@ -263,21 +310,55 @@ procedure TfrmFilmBase.lvFilmTabCompare(Sender: TObject;Item1, Item2: TListItem;
 function CompareTextAsInteger(const S1,S2: string):Integer;
 begin
    if (StrToInt(S1) < StrToInt(S2)) and not Descending then
-      CompareTextAsInteger := -1
+      CompareTextAsInteger := 1
    else
-      CompareTextAsInteger := 1;
+      CompareTextAsInteger := -1;
 end;
 begin
   if SortedColumn = 0 then
   begin
-    Compare := CompareText(Item1.Caption, Item2.Caption);
+  //  Compare := CompareText(Item1.Caption, Item2.Caption);
     Compare := CompareTextAsInteger(Item1.Caption, Item2.Caption);
   end
   else
     Compare := CompareText(Item1.SubItems[SortedColumn - 1],
       Item2.SubItems[SortedColumn - 1]);
-  if Descending then
+  if not Descending then
     Compare := -Compare;
+end;
+
+procedure TfrmFilmBase.DrawOneFilm(CurrNode : PFilm);
+begin
+  lvFilmTab.Items.BeginUpdate;
+  with lvFilmTab.Items.Add do
+  begin
+    Caption := IntToStr(CurrNode^.Item.Index);
+    SubItems.Add(CurrNode^.Item.Title);
+    SubItems.Add(IntToStr(CurrNode^.Item.Year));
+    SubItems.Add(CurrNode^.Item.Country);
+    SubItems.Add(CurrNode^.Item.Director.LastName);
+    SubItems.Add(frmFeatures.TabGenre(CurrNode^.Item.Genre));
+    SubItems.Add(IntToStr(CurrNode^.Item.Duration));;
+    if CurrNode^.Item.Ready then
+    begin
+      SubItems.Add(' +');
+      SubItems.Add(IntToStr(CurrNode^.Item.Rating));
+    end
+    else
+    begin
+      SubItems.Add('  -');
+      SubItems.Add(' -')
+    end;
+  end;
+  lvFilmTab.Items.EndUpdate;
+end;
+
+
+
+procedure TfrmFilmBase.Mistake;
+begin
+  MessageBox(Handle, PChar('Ни одного фильма не найдено'),
+      PChar(':('), MB_OK);
 end;
 
 end.

@@ -145,6 +145,7 @@ object frmFilmBase: TfrmFilmBase
     Height = 41
     Caption = #1055#1086#1080#1089#1082
     TabOrder = 6
+    OnClick = btnSearchClick
   end
   object btnMenu: TButton
     Left = 696
@@ -154,6 +155,67 @@ object frmFilmBase: TfrmFilmBase
     Caption = #1052#1077#1085#1102
     TabOrder = 7
     OnClick = btnMenuClick
+  end
+  object pnlSearch: TPanel
+    Left = 664
+    Top = 0
+    Width = 180
+    Height = 465
+    Align = alRight
+    TabOrder = 8
+    Visible = False
+    object lblHint1: TLabel
+      Left = 16
+      Top = 24
+      Width = 87
+      Height = 13
+      Caption = #1050#1088#1080#1090#1077#1088#1080#1081' '#1087#1086#1080#1089#1082#1072
+    end
+    object lblHint2: TLabel
+      Left = 16
+      Top = 93
+      Width = 30
+      Height = 13
+      Caption = #1055#1086#1080#1089#1082
+    end
+    object cmbbxSearchCriteria: TComboBox
+      Left = 16
+      Top = 53
+      Width = 145
+      Height = 21
+      TabOrder = 0
+      Items.Strings = (
+        #1087#1086' '#1085#1072#1079#1074#1072#1085#1080#1102' '
+        #1087#1086' '#1075#1086#1076#1091
+        #1087#1086' '#1089#1090#1088#1072#1085#1077
+        #1087#1086' '#1088#1077#1078#1080#1089#1089#1077#1088#1091
+        #1087#1086' '#1082#1083#1102#1095#1077#1074#1099#1084' '#1089#1083#1086#1074#1072#1084
+        #1087#1086' '#1076#1083#1080#1090#1077#1083#1100#1085#1086#1089#1090#1080)
+    end
+    object edtSearch: TEdit
+      Left = 16
+      Top = 127
+      Width = 145
+      Height = 21
+      TabOrder = 1
+    end
+    object btnSearchFilm: TButton
+      Left = 48
+      Top = 183
+      Width = 81
+      Height = 26
+      Caption = #1053#1072#1081#1090#1080
+      TabOrder = 2
+      OnClick = btnSearchFilmClick
+    end
+    object btnBack: TButton
+      Left = 48
+      Top = 392
+      Width = 81
+      Height = 25
+      Caption = #1053#1072#1079#1072#1076
+      TabOrder = 3
+    end
   end
   object SaveReport: TSaveTextFileDialog
     Filter = 'Text file (*.txt)|*.txt'

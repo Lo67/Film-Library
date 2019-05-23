@@ -27,7 +27,7 @@ type
     Science_fiction, Horror, Historical, Mystery, Romance, Western, Animation,
     Musical, Satire, Social, Other);
   TCountry = string[30];
-  TYear = 1 .. 3000;
+  TYear = Integer;//1..3000;
   TWords = string[20];
   TAwards = string[50];
   TBudget = TName;

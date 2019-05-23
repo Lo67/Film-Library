@@ -116,38 +116,37 @@ var
   Info: TItem;
   Index: Integer;
 begin
-  { Проверка првильности введенных полей }
-  if (edtTitle.Text = '') or (edtDirectorLastName.Text = '') or
-    (edtDirectorName.Text = '') or (cmbbxGenre.ItemIndex = -1) or
-    (edtCountry.Text = '') or (edtYear.Text = '') or (edtDuration.Text = '')
-  then
-    MessageBox(Handle, PChar('Не все необходимые поля заполнены!'),
-      PChar('ВНИМАНИЕ!'), MB_ICONWARNING + MB_OK)
-  else
-  begin
-    with Info do
+    if (edtTitle.Text = '') or (edtDirectorLastName.Text = '') or
+      (edtDirectorName.Text = '') or (cmbbxGenre.ItemIndex = -1) or
+      (edtCountry.Text = '') or (edtYear.Text = '') or (edtDuration.Text = '')
+    then
+      MessageBox(Handle, PChar('Не все необходимые поля заполнены!'),
+        PChar('ВНИМАНИЕ!'), MB_ICONWARNING + MB_OK)
+    else
     begin
-      if frmFeatures.Tag = 1 then
-        Index := List.fICount + 1
-      else
-        Index := frmFilmBase.GetSelectIndex + 1;
-      Title := edtTitle.Text;
-      Director.LastName := edtDirectorLastName.Text;
-      Director.Name := edtDirectorName.Text;
-      Director.MiddleName := edtDirectorMiddleName.Text;
-      Genre := cmbbxGenreChange(cmbbxGenre);
-      Country := edtCountry.Text;
-      Year := StrToInt(edtYear.Text);
-      Duration := StrToInt(edtDuration.Text);
-      Words := edtWords.Text;
-      Awards := edtAwards.Text;
-      Budget := edtBudget.Text;
-      BoxOffice := edtBoxOffice.Text;
-      Ready := chbxReady.Checked;
-      if Info.Ready then
-        Info.Rating := cmbbxRatingChange(cmbbxRating);
+      with Info do
+      begin
+        if frmFeatures.Tag = 1 then
+          Index := List.fICount + 1
+        else
+          Index := frmFilmBase.GetSelectIndex + 1;
+        Title := edtTitle.Text;
+        Director.LastName := edtDirectorLastName.Text;
+        Director.Name := edtDirectorName.Text;
+        Director.MiddleName := edtDirectorMiddleName.Text;
+        Genre := cmbbxGenreChange(cmbbxGenre);
+        Country := edtCountry.Text;
+        Year := StrToInt(edtYear.Text);
+        Duration := StrToInt(edtDuration.Text);
+        Words := edtWords.Text;
+        Awards := edtAwards.Text;
+        Budget := edtBudget.Text;
+        BoxOffice := edtBoxOffice.Text;
+        Ready := chbxReady.Checked;
+        if Info.Ready then
+          Info.Rating := cmbbxRatingChange(cmbbxRating);
+      end;
     end;
-  end;
 
   if frmFeatures.Tag = 1 then
     List.CreateFilm(Info)
