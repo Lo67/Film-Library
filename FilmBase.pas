@@ -83,6 +83,7 @@ procedure TfrmFilmBase.UpdateTab(List: TFilmList);
 var
   CurrNode: PFilm;
 begin
+  List.RestoreIndexing();
   lvFilmTab.Clear;
   CurrNode := List.Head;
   lvFilmTab.Items.BeginUpdate;
@@ -191,19 +192,23 @@ begin
   begin
     if frmFeatures.Tag = 3 then
     begin
-      for i := 0 to List.fICount-1 do
+      i := 0;
+      while i < List.fICount do
+      begin
         if lvFilmTab.Items[i].Checked then
         begin
-          Index := StrToInt(lvFilmTab.Items[i].Caption)-1;
+          Index := StrToInt(lvFilmTab.Items[i].Caption);
           List.DeleteFilm(Index);
         end;
+        Inc(i);
+      end;
     end
     else
     begin
       Index := GetSelectIndex + 1;
       List.DeleteFilm(Index);
     end;
-    List.SaveList(FILE_NAME);
+//    List.SaveList(FILE_NAME);
     UpdateTab(List);
   end;
 

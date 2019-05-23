@@ -165,8 +165,6 @@ object frmFilmBase: TfrmFilmBase
     Align = alRight
     TabOrder = 8
     Visible = False
-    ExplicitLeft = 399
-    ExplicitTop = -8
     object lblHint1: TLabel
       Left = 16
       Top = 24

@@ -76,6 +76,7 @@ type
     procedure SaveList(const aFileName: string);
     procedure EditFilm(const aItem: TItem; const aIndex: Integer);
     function GetFilmByIndex(const aIndex: Integer): PFilm;
+    procedure RestoreIndexing();
   private
     procedure UploadFile(const aFileName: string);
     procedure AddFilm(const Item: PFilm);
@@ -91,14 +92,30 @@ begin
   UploadFile(FILE_NAME);
 end;
 
+{destructor TFilmList.Destroy;
+var
+   Temp: PFilm;
+begin
+  while Head.Next <> nil do
+  begin
+     Temp := Head.Next;
+     Head.Next := Temp.Next;
+     Dispose(Temp);
+  end;
+  Temp := Head;
+  Dispose(Head);
+//  Dispose(Tail); // Если будет invalid pointer operation убрать эту строку
+end;}
+
 destructor TFilmList.Destroy;
 begin
   while not IsEmpty() do
   begin
     DeleteFilm(1);
+    RestoreIndexing()
   end;
   Dispose(Head);
-  Dispose(Tail); // Если будет invalid pointer operation убрать эту строку}
+  Dispose(Tail);
 end;
 
 function TFilmList.IsEmpty(): Boolean;
@@ -214,15 +231,6 @@ begin
       Tail := nil;
       Dispose(CurrNode);
     end;
-    i := 1;
-    CurrNode := Head;
-    while CurrNode <> nil do
-    begin
-      CurrNode.Item.Index := i;
-      Inc(i);
-      CurrNode := CurrNode.Next;
-    end;
-    fICount := i - 1;
   end;
 
   { по факту
@@ -243,10 +251,19 @@ begin
   Result := CurrNode;
 end;
 
-procedure Proc ();
+procedure TFilmList.RestoreIndexing();
 var
-  T: PChar;
+  i: Integer;
+  CurrNode : PFilm;
 begin
-
+  i := 1;
+  CurrNode := Head;
+  while CurrNode <> nil do
+  begin
+    CurrNode.Item.Index := i;
+    Inc(i);
+    CurrNode := CurrNode.Next;
+  end;
+  fICount := i - 1;
 end;
 end.
