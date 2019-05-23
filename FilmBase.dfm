@@ -56,8 +56,8 @@ object frmFilmBase: TfrmFilmBase
       item
         Caption = #1056#1077#1078#1080#1089#1089#1105#1088
         MaxWidth = 200
-        MinWidth = 90
-        Width = 90
+        MinWidth = 75
+        Width = 75
       end
       item
         Caption = #1046#1072#1085#1088
@@ -89,6 +89,8 @@ object frmFilmBase: TfrmFilmBase
     TabOrder = 0
     ViewStyle = vsReport
     OnClick = lvFilmTabOnClick
+    OnColumnClick = lvFilmTabColumnClick
+    OnCompare = lvFilmTabCompare
     OnDblClick = ShowFilmInfo
   end
   object btnSelect: TButton

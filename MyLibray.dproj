@@ -98,7 +98,6 @@
             <Form>frmFilmBase</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="OperationList.pas"/>
         <DCCReference Include="TypeList.pas"/>
         <DCCReference Include="Feature.pas">
             <Form>frmFeatures</Form>

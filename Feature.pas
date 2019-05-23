@@ -153,7 +153,7 @@ begin
     List.CreateFilm(Info)
   else
   begin
-    Index := frmFilmBase.lvFilmTab.ItemIndex;
+    Index := frmFilmBase.GetSelectIndex;
     List.EditFilm(Info, Index);
   end;
 

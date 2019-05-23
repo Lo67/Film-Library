@@ -29,9 +29,15 @@ type
     procedure btnMenuClick(Sender: TObject);
     procedure btnReportClick(Sender: TObject);
     procedure ShowFilmInfo(Sender: TObject);
+    procedure lvFilmTabColumnClick(Sender: TObject; Column: TListColumn);
+    procedure lvFilmTabCompare(Sender: TObject; Item1, Item2: TListItem;
+      Data: Integer; var Compare: Integer);
   public
     procedure UpdateTab(List: TFilmList);
-    function GetSelectIndex(): Integer;
+    function GetSelectIndex: Integer;
+  private
+    Descending: Boolean;
+    SortedColumn: Integer;
   end;
 
 var
@@ -65,6 +71,7 @@ var
 begin
   lvFilmTab.Clear;
   CurrNode := List.Head;
+  lvFilmTab.Items.BeginUpdate;
   while CurrNode <> nil do
   begin
     with lvFilmTab.Items.Add do
@@ -89,10 +96,12 @@ begin
     end;
     CurrNode := CurrNode^.Next;
   end;
+  lvFilmTab.Items.EndUpdate;
 end;
 
 procedure TfrmFilmBase.btnSelectClick(Sender: TObject);
 begin
+
   if lvFilmTab.Checkboxes = False then
   begin
     lvFilmTab.Checkboxes := True;
@@ -107,6 +116,8 @@ end;
 procedure TfrmFilmBase.btnAddClick(Sender: TObject);
 begin
   frmFeatures.Tag := 1;
+  frmFeatures.edtBudget.Text := ' млн. $';
+  frmFeatures.edtBoxOffice.Text := ' $';
   frmFeatures.ShowModal;
 end;
 
@@ -114,7 +125,7 @@ procedure TfrmFilmBase.btnDeleteClick(Sender: TObject);
 var
   Index: Integer;
 begin
-  Index := GetselectIndex + 1;
+  Index := GetSelectIndex + 1;
   List.DeleteFilm(Index);
   List.SaveList(FILE_NAME);
   UpdateTab(List);
@@ -167,30 +178,33 @@ end;
 
 procedure TfrmFilmBase.btnReportClick(Sender: TObject);
 var
-  CurrNode : PFilm;
-  Index : Integer;
+  CurrNode: PFilm;
+  Index: Integer;
   F: TextFile;
-  temp : Word;
+  temp: Word;
 begin
   Index := GetSelectIndex;
   CurrNode := List.GetFilmByIndex(Index);
 
   if SaveReport.Execute then
   begin
-    AssignFile (F, SaveReport.FileName{ + '.txt'});
+    AssignFile(F, SaveReport.FileName { + '.txt' } );
     Rewrite(F);
     Write(F, CurrNode.Item.Title, ', ', CurrNode.Item.Year, ', ',
-          CurrNode.Item.Country,', ',frmFeatures.TabGenre(CurrNode.Item.Genre),
-          ', ',CurrNode.Item.Director.Name,' ',
-          CurrNode.Item.Director.LastName);
+      CurrNode.Item.Country, ', ', frmFeatures.TabGenre(CurrNode.Item.Genre),
+      ', ', CurrNode.Item.Director.Name, ' ', CurrNode.Item.Director.LastName);
     CloseFile(F);
-    MessageBox(Handle,PChar('Отчёт успешно создан!'),PChar('Внимание!'), MB_OK);
+    MessageBox(Handle, PChar('Отчёт успешно создан!'),
+      PChar('Внимание!'), MB_OK);
   end;
 end;
 
 function TfrmFilmBase.GetSelectIndex(): Integer;
+var
+  Index : Integer;
 begin
-  Result := lvFilmTab.ItemIndex;
+  Index := lvFilmTab.ItemIndex;
+  Result := StrToInt(lvFilmTab.Items[Index].Caption) - 1;
 end;
 
 procedure TfrmFilmBase.lvFilmTabOnClick(Sender: TObject);
@@ -229,6 +243,41 @@ begin
       lblRealRating.Caption := '';
   end;
   frmFilmInfo.ShowModal;
+end;
+
+procedure TfrmFilmBase.lvFilmTabColumnClick(Sender: TObject;
+  Column: TListColumn);
+begin
+  TListView(Sender).SortType := stNone;
+  if Column.Index <> SortedColumn then
+  begin
+    SortedColumn := Column.Index;
+    Descending := False;
+  end
+  else
+    Descending := not Descending;
+  TListView(Sender).SortType := stText;
+end;
+
+procedure TfrmFilmBase.lvFilmTabCompare(Sender: TObject;Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
+function CompareTextAsInteger(const S1,S2: string):Integer;
+begin
+   if (StrToInt(S1) < StrToInt(S2)) and not Descending then
+      CompareTextAsInteger := -1
+   else
+      CompareTextAsInteger := 1;
+end;
+begin
+  if SortedColumn = 0 then
+  begin
+    Compare := CompareText(Item1.Caption, Item2.Caption);
+    Compare := CompareTextAsInteger(Item1.Caption, Item2.Caption);
+  end
+  else
+    Compare := CompareText(Item1.SubItems[SortedColumn - 1],
+      Item2.SubItems[SortedColumn - 1]);
+  if Descending then
+    Compare := -Compare;
 end;
 
 end.

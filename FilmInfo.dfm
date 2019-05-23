@@ -22,10 +22,16 @@ object frmFilmInfo: TfrmFilmInfo
   TextHeight = 13
   object lblTitel: TLabel
     Left = 24
-    Top = 24
-    Width = 48
-    Height = 13
+    Top = 20
+    Width = 73
+    Height = 18
     Caption = #1053#1072#1079#1074#1072#1085#1080#1077
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblDirectorLastName: TLabel
     Left = 24
@@ -128,8 +134,8 @@ object frmFilmInfo: TfrmFilmInfo
   object lblRealTitel: TLabel
     Left = 192
     Top = 24
-    Width = 225
-    Height = 25
+    Width = 51
+    Height = 13
     Caption = 'lblRealTitel'
   end
   object lblRealDirectorLastName: TLabel
