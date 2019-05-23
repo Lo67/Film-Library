@@ -23,108 +23,198 @@ object frmFeatures: TfrmFeatures
   TextHeight = 13
   object lblTitel: TLabel
     Left = 24
-    Top = 24
-    Width = 57
-    Height = 13
+    Top = 20
+    Width = 89
+    Height = 19
     Caption = #1053#1072#1079#1074#1072#1085#1080#1077' *'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblDirectorLastName: TLabel
     Left = 24
-    Top = 80
-    Width = 53
-    Height = 13
+    Top = 82
+    Width = 75
+    Height = 22
     Caption = #1060#1080#1084#1080#1083#1080#1103' *'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblDirectorName: TLabel
     Left = 24
-    Top = 107
-    Width = 28
-    Height = 13
+    Top = 109
+    Width = 37
+    Height = 22
     Caption = #1048#1084#1103' *'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblDirectorMiddleName: TLabel
     Left = 24
-    Top = 134
-    Width = 49
-    Height = 13
+    Top = 137
+    Width = 67
+    Height = 22
     Caption = #1054#1090#1095#1077#1089#1090#1074#1086
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblGenre: TLabel
-    Left = 24
-    Top = 187
-    Width = 37
-    Height = 13
+    Left = 26
+    Top = 181
+    Width = 47
+    Height = 22
     Caption = #1046#1072#1085#1088' *'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblCountry: TLabel
     Left = 24
-    Top = 224
-    Width = 46
-    Height = 13
+    Top = 218
+    Width = 59
+    Height = 22
     Caption = #1057#1090#1088#1072#1085#1072' *'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblYear: TLabel
     Left = 24
-    Top = 259
-    Width = 28
-    Height = 13
+    Top = 253
+    Width = 35
+    Height = 22
     Caption = #1043#1086#1076' *'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblDuration: TLabel
     Left = 24
-    Top = 296
-    Width = 82
-    Height = 13
+    Top = 290
+    Width = 111
+    Height = 22
     Caption = #1044#1083#1080#1090#1077#1083#1100#1085#1086#1089#1090#1100' *'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblWords: TLabel
     Left = 24
-    Top = 331
-    Width = 86
-    Height = 13
+    Top = 325
+    Width = 122
+    Height = 22
     Caption = #1050#1083#1102#1095#1077#1074#1099#1077' '#1089#1083#1086#1074#1072
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblAwards: TLabel
-    Left = 24
-    Top = 371
-    Width = 45
-    Height = 13
+    Left = 21
+    Top = 365
+    Width = 62
+    Height = 22
     Caption = #1053#1072#1075#1088#1072#1076#1099
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblBudget: TLabel
-    Left = 24
-    Top = 408
-    Width = 42
-    Height = 13
+    Left = 21
+    Top = 402
+    Width = 56
+    Height = 22
     Caption = #1041#1102#1076#1078#1077#1090
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblBoxOffice: TLabel
     Left = 24
-    Top = 451
-    Width = 33
-    Height = 13
+    Top = 445
+    Width = 49
+    Height = 22
     Caption = #1057#1073#1086#1088#1099
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblReady: TLabel
     Left = 24
-    Top = 491
-    Width = 71
-    Height = 13
+    Top = 485
+    Width = 105
+    Height = 22
     Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1085#1086'?'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblRating: TLabel
-    Left = 24
-    Top = 528
-    Width = 41
-    Height = 13
+    Left = 21
+    Top = 522
+    Width = 56
+    Height = 22
     Caption = #1056#1077#1081#1090#1080#1085#1075
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object lblDirector: TLabel
     Left = 24
-    Top = 51
-    Width = 55
-    Height = 13
+    Top = 54
+    Width = 79
+    Height = 22
     Caption = #1056#1077#1078#1080#1089#1089#1105#1088' :'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -18
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object edtTitle: TEdit
     Left = 176
@@ -137,7 +227,7 @@ object frmFeatures: TfrmFeatures
   end
   object edtDirectorLastName: TEdit
     Left = 176
-    Top = 77
+    Top = 85
     Width = 225
     Height = 21
     PopupMenu = PopupMenu1
@@ -145,7 +235,7 @@ object frmFeatures: TfrmFeatures
   end
   object edtDirectorName: TEdit
     Left = 176
-    Top = 104
+    Top = 112
     Width = 225
     Height = 21
     PopupMenu = PopupMenu1
@@ -153,7 +243,7 @@ object frmFeatures: TfrmFeatures
   end
   object edtDirectorMiddleName: TEdit
     Left = 176
-    Top = 131
+    Top = 139
     Width = 225
     Height = 21
     PopupMenu = PopupMenu1

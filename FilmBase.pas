@@ -85,7 +85,7 @@ var
 begin
   List.RestoreIndexing();
   lvFilmTab.Clear;
-  CurrNode := List.Head;
+  CurrNode := List.EntryPoint.Next;
   lvFilmTab.Items.BeginUpdate;
   while CurrNode <> nil do
   begin
@@ -313,7 +313,6 @@ begin
   Result := StrToInt(lvFilmTab.Items[Index].Caption) - 1;
 end;
 
-
 procedure TfrmFilmBase.lvFilmTabOnClick(Sender: TObject);
 begin
   if frmFeatures.Tag = 3 then
@@ -351,8 +350,10 @@ begin
     lblRealAwards.Caption := CurrNode.Item.Awards;
     lblRealBudget.Caption := CurrNode.Item.Budget;
     lblRealBoxOffice.Caption := CurrNode.Item.BoxOffice;
-    chbxReady.Checked := CurrNode.Item.Ready;
-    chbxReady.Enabled := False;
+    if CurrNode.Item.Ready then
+      lblRealReady.Caption := 'Да'
+    else
+      lblRealReady.Caption := 'Нет';
     if CurrNode.Item.Ready then
       lblRealRating.Caption := IntToStr(CurrNode.Item.Rating)
     else
@@ -430,8 +431,6 @@ begin
   end;
   lvFilmTab.Items.EndUpdate;
 end;
-
-
 
 procedure TfrmFilmBase.Mistake;
 begin

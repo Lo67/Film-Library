@@ -49,6 +49,7 @@ type
     procedure edtYearKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
+    procedure edtDurationChange(Sender: TObject; var  Key: Char);
   private
     { Private declarations }
   public
@@ -242,6 +243,14 @@ begin
     9:
       Result := 1;
   end;
+end;
+
+procedure TfrmFeatures.edtDurationChange(Sender: TObject; var  Key: Char);
+const
+  Digits = ['0' .. '9', #8];
+begin
+  if not(Key in Digits) then
+    Key := #0;
 end;
 
 procedure TfrmFeatures.edtYearKeyPress(Sender: TObject; var Key: Char);

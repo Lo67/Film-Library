@@ -64,6 +64,7 @@ type
   // |||||||||||||||
   // TListFilm
   TFilmList = class
+    EntryPoint: PFilm;
     Head: PFilm;
     Tail: PFilm;
     fICount: Integer;
@@ -87,25 +88,12 @@ implementation
 
 constructor TFilmList.Create;
 begin
+  New(EntryPoint);
+  EntryPoint.Next := nil;
   Head := nil;
   Tail := nil;
   UploadFile(FILE_NAME);
 end;
-
-{destructor TFilmList.Destroy;
-var
-   Temp: PFilm;
-begin
-  while Head.Next <> nil do
-  begin
-     Temp := Head.Next;
-     Head.Next := Temp.Next;
-     Dispose(Temp);
-  end;
-  Temp := Head;
-  Dispose(Head);
-//  Dispose(Tail); // ≈сли будет invalid pointer operation убрать эту строку
-end;}
 
 destructor TFilmList.Destroy;
 begin
@@ -114,13 +102,12 @@ begin
     DeleteFilm(1);
     RestoreIndexing()
   end;
-  Dispose(Head);
-  Dispose(Tail);
+  Dispose(EntryPoint);
 end;
 
 function TFilmList.IsEmpty(): Boolean;
 begin
-  Result := Head = nil;
+  Result := EntryPoint.Next = nil;
 end;
 
 procedure TFilmList.UploadFile(const aFileName: string);
@@ -166,16 +153,15 @@ var
   PFilmInfo: PFilm;
 begin
   New(PFilmInfo);
-
   PFilmInfo^.Item := aItem;
   AddFilm(PFilmInfo);
 end;
 
-procedure TFilmList.AddFilm(const Item: PFilm); // appendItem
+procedure TFilmList.AddFilm(const Item: PFilm);
 begin
-  if Head = nil then
+  if EntryPoint.Next = nil then
   begin
-    Head := Item;
+    EntryPoint.Next := Item;
     Tail := Item;
   end
   else
@@ -191,10 +177,11 @@ procedure TFilmList.EditFilm(const aItem: TItem; const aIndex: Integer);
 var
   CurrNode: PFilm;
 begin
-  CurrNode := Head;
+  CurrNode := EntryPoint.Next;
   while CurrNode.Item.Index <> aIndex + 1 do
     CurrNode := CurrNode.Next;
   CurrNode^.Item := aItem;
+  SaveList(FILE_NAME); //
 end;
 
 procedure TFilmList.DeleteFilm(const FilmIndex: Integer);
@@ -204,48 +191,24 @@ var
 begin
   if not IsEmpty() then
   begin
-    if fICount > 1 then
-    begin
-      if FilmIndex > 1 then
-      begin
-        PrevNode := Head;
-        while PrevNode.Item.Index <> FilmIndex - 1 do    ////////////////////!!!!!!!!!!
-          PrevNode := PrevNode.Next;
-        CurrNode := PrevNode.Next;
-        PrevNode.Next := CurrNode.Next;
-        if CurrNode = Tail then
-          Tail := PrevNode;
-        Dispose(CurrNode);
-      end
-      else
-      begin
-        CurrNode := Head;
-        Head := Head.Next;
-        Dispose(CurrNode);
-      end;
-    end
-    else
-    begin
-      CurrNode := Head;
-      Head := nil;
-      Tail := nil;
-      Dispose(CurrNode);
-    end;
-  end;
 
-  { по факту
-    Temp := Head;
-    Head:=nil;
-    Tail := nil;
-    Dispose (Temp)
-  }
+    PrevNode := EntryPoint;
+    while PrevNode.Next.Item.Index <> FilmIndex  do
+      PrevNode := PrevNode.Next;
+    CurrNode := PrevNode.Next;
+    PrevNode.Next := CurrNode.Next;
+    if CurrNode = Tail then
+      Tail := PrevNode;
+    Dispose(CurrNode);
+    //Dec(FICount);
+  end;
 end;
 
 function TFilmList.GetFilmByIndex(const aIndex: Integer): PFilm;
 var
   CurrNode: PFilm;
 begin
-  CurrNode := Head;
+  CurrNode := EntryPoint.Next;
   while CurrNode.Item.Index <> aIndex + 1 do
     CurrNode := CurrNode.Next;
   Result := CurrNode;
@@ -257,13 +220,13 @@ var
   CurrNode : PFilm;
 begin
   i := 1;
-  CurrNode := Head;
+  CurrNode := EntryPoint.Next;
   while CurrNode <> nil do
   begin
     CurrNode.Item.Index := i;
     Inc(i);
     CurrNode := CurrNode.Next;
   end;
-  fICount := i - 1;
+  FICount := i - 1;
 end;
 end.
