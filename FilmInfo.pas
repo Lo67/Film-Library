@@ -27,7 +27,6 @@ type
     lblRating: TLabel;
     lblDirector: TLabel;
     btnOK: TButton;
-    chbxReady: TCheckBox;
     lblRealTitel: TLabel;
     lblRealDirectorLastName: TLabel;
     lblRealDirectorName: TLabel;
@@ -41,6 +40,7 @@ type
     lblRealBudget: TLabel;
     lblRealBoxOffice: TLabel;
     lblRealRating: TLabel;
+    lblRealReady: TLabel;
     procedure btnOKClick(Sender: TObject);
   end;
 
@@ -51,8 +51,7 @@ implementation
 
 {$R *.dfm}
 
-
-
+{ Нажатие на кнопку ОК }
 procedure TfrmFilmInfo.btnOKClick(Sender: TObject);
 begin
   frmFilmInfo.Close;

@@ -65,6 +65,7 @@ implementation
 uses
   Menu, UnitAlgoritms, FilmInfo, Feature;
 
+{ Создание формы }
 procedure TfrmFilmBase.FormCreate(Sender: TObject);
 begin
   List := TFilmList.Create;
@@ -74,17 +75,20 @@ begin
   frmFilmBase.btnReport.Enabled := False;
 end;
 
+{ Закрытие формы }
 procedure TfrmFilmBase.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   frmMenu.Show;
 end;
 
+{ Перерисовка таблицы }
 procedure TfrmFilmBase.UpdateTab(List: TFilmList);
 var
   CurrNode: PFilm;
 begin
+  List.RestoreIndexing();
   lvFilmTab.Clear;
-  CurrNode := List.Head;
+  CurrNode := List.EntryPoint.Next;
   lvFilmTab.Items.BeginUpdate;
   while CurrNode <> nil do
   begin
@@ -113,9 +117,9 @@ begin
   lvFilmTab.Items.EndUpdate;
 end;
 
+{ Изменение критерия поиска }
 function TfrmFilmBase.cmbbxSearchCriteriaChange(Sender: TObject) : Integer;
 begin
-
   case cmbbxSearchCriteria.ItemIndex of
     0: Result := 0;
     1: Result := 1;
@@ -126,11 +130,13 @@ begin
   end;
 end;
 
+{ Нажатие на поиск }
 procedure TfrmFilmBase.btnSearchClick(Sender: TObject);
 begin
   pnlSearch.Visible := True;
 end;
 
+{ Непосредственно поиск }
 procedure TfrmFilmBase.btnSearchFilmClick(Sender: TObject);
 begin
     if (cmbbxSearchCriteria.ItemIndex= -1) or (edtSearch.Text = '') then
@@ -147,6 +153,7 @@ begin
     end;
 end;
 
+{ Кнопка выбрать фильм }
 procedure TfrmFilmBase.btnSelectClick(Sender: TObject);
 begin
 
@@ -165,20 +172,24 @@ begin
   end;
 end;
 
+{ Кнопка добавить }
 procedure TfrmFilmBase.btnAddClick(Sender: TObject);
 begin
   frmFeatures.Tag := 1;
+  ClearFeaturesEdits;
   frmFeatures.edtBudget.Text := ' млн. $';
   frmFeatures.edtBoxOffice.Text := ' $';
   frmFeatures.ShowModal;
 end;
 
+{ Кнопка назад }
 procedure TfrmFilmBase.btnBackClick(Sender: TObject);
 begin
   UpdateTab(List);
   pnlSearch.Visible := False;
 end;
 
+{  Удаления }
 procedure TfrmFilmBase.btnDeleteClick(Sender: TObject);
 var
   Index: Integer;
@@ -191,12 +202,16 @@ begin
   begin
     if frmFeatures.Tag = 3 then
     begin
-      for i := 0 to List.fICount-1 do
+      i := 0;
+      while i < List.fICount do
+      begin
         if lvFilmTab.Items[i].Checked then
         begin
-          Index := StrToInt(lvFilmTab.Items[i].Caption)-1;
+          Index := StrToInt(lvFilmTab.Items[i].Caption);
           List.DeleteFilm(Index);
         end;
+        Inc(i);
+      end;
     end
     else
     begin
@@ -212,6 +227,7 @@ begin
   frmFilmBase.btnReport.Enabled := lvFilmTab.ItemIndex <> -1;
 end;
 
+{ Кнопка редактирования }
 procedure TfrmFilmBase.btnEditClick(Sender: TObject);
 var
   Index: Integer;
@@ -248,12 +264,14 @@ begin
   frmFeatures.ShowModal;
 end;
 
+{ Кнопка меню }
 procedure TfrmFilmBase.btnMenuClick(Sender: TObject);
 begin
   frmFilmBase.Close;
   frmMenu.Show;
 end;
 
+{ Кнопка отчет  }     //A1
 procedure TfrmFilmBase.btnReportClick(Sender: TObject);
 var
   CurrNode: PFilm;
@@ -300,6 +318,8 @@ begin
   end;
 end;
 
+
+{ Получение индекса выделенного фильма }
 function TfrmFilmBase.GetSelectIndex(): Integer;
 var
   Index : Integer;
@@ -308,7 +328,7 @@ begin
   Result := StrToInt(lvFilmTab.Items[Index].Caption) - 1;
 end;
 
-
+{ Нажатие на таблицу  }
 procedure TfrmFilmBase.lvFilmTabOnClick(Sender: TObject);
 begin
   if frmFeatures.Tag = 3 then
@@ -325,6 +345,8 @@ begin
   end;
 end;
 
+
+{ подготовка к показу информации о фильме  }
 procedure TfrmFilmBase.ShowFilmInfo(Sender: TObject);
 var
   Index: Integer;
@@ -346,8 +368,10 @@ begin
     lblRealAwards.Caption := CurrNode.Item.Awards;
     lblRealBudget.Caption := CurrNode.Item.Budget;
     lblRealBoxOffice.Caption := CurrNode.Item.BoxOffice;
-    chbxReady.Checked := CurrNode.Item.Ready;
-    chbxReady.Enabled := False;
+    if CurrNode.Item.Ready then
+      lblRealReady.Caption := 'Да'
+    else
+      lblRealReady.Caption := 'Нет';
     if CurrNode.Item.Ready then
       lblRealRating.Caption := IntToStr(CurrNode.Item.Rating)
     else
@@ -356,6 +380,7 @@ begin
   frmFilmInfo.ShowModal;
 end;
 
+{ Нажатие не колонку }
 procedure TfrmFilmBase.lvFilmTabColumnClick(Sender: TObject;
   Column: TListColumn);
 begin
@@ -370,6 +395,8 @@ begin
   TListView(Sender).SortType := stText;
 end;
 
+
+{ Сравнение }
 procedure TfrmFilmBase.lvFilmTabCompare(Sender: TObject;Item1, Item2: TListItem; Data: Integer; var Compare: Integer);
 function CompareTextAsInteger(const S1,S2: string):Integer;
 begin
@@ -381,7 +408,6 @@ end;
 begin
   if SortedColumn = 0 then
   begin
-  //  Compare := CompareText(Item1.Caption, Item2.Caption);
     Compare := CompareTextAsInteger(Item1.Caption, Item2.Caption);
   end
   else
@@ -391,6 +417,8 @@ begin
     Compare := -Compare;
 end;
 
+
+{Выделение галочкой }
 procedure TfrmFilmBase.lvFilmTabItemChecked(Sender: TObject; Item: TListItem);
 begin
   frmFilmBase.btnEdit.Enabled := True;
@@ -400,6 +428,7 @@ begin
   frmFeatures.Tag := 3;
 end;
 
+{ Прорисовка одного фильма для поиска }
 procedure TfrmFilmBase.DrawOneFilm(CurrNode : PFilm);
 begin
   lvFilmTab.Items.BeginUpdate;
@@ -426,8 +455,7 @@ begin
   lvFilmTab.Items.EndUpdate;
 end;
 
-
-
+{ Сообщение об ошибке }
 procedure TfrmFilmBase.Mistake;
 begin
   MessageBox(Handle, PChar('Ни одного фильма не найдено'),

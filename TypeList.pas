@@ -19,15 +19,11 @@ type
   end;
 
   TTime = Integer;
-  { TTime = record
-    Minutes : Integer;
-    Seconds : string[3];   //??
-    end; }
   TGenre = (Adventure, GAction, Comedy, Detective, Drama, Thriller, Fantasy,
     Science_fiction, Horror, Historical, Mystery, Romance, Western, Animation,
     Musical, Satire, Social, Other);
   TCountry = string[30];
-  TYear = Integer;//1..3000;
+  TYear = Integer;
   TWords = string[20];
   TAwards = string[50];
   TBudget = TName;
@@ -60,10 +56,8 @@ type
     Next: PFilm;
   end;
 
-  // |||||||||||||||
-  // |||||||||||||||
-  // TListFilm
   TFilmList = class
+    EntryPoint: PFilm;
     Head: PFilm;
     Tail: PFilm;
     fICount: Integer;
@@ -76,6 +70,7 @@ type
     procedure SaveList(const aFileName: string);
     procedure EditFilm(const aItem: TItem; const aIndex: Integer);
     function GetFilmByIndex(const aIndex: Integer): PFilm;
+    procedure RestoreIndexing();
   private
     procedure UploadFile(const aFileName: string);
     procedure AddFilm(const Item: PFilm);
@@ -84,28 +79,34 @@ type
 
 implementation
 
+{ Конструктор создания списка при запуске программы }
 constructor TFilmList.Create;
 begin
+  New(EntryPoint);
+  EntryPoint.Next := nil;
   Head := nil;
   Tail := nil;
   UploadFile(FILE_NAME);
 end;
 
+{ Деструктор. Разрушение списка при закрытии программы }
 destructor TFilmList.Destroy;
 begin
   while not IsEmpty() do
   begin
     DeleteFilm(1);
+    RestoreIndexing()
   end;
-  Dispose(Head);
-  Dispose(Tail); // Если будет invalid pointer operation убрать эту строку}
+  Dispose(EntryPoint);
 end;
 
+{ Проверка на существования элементов в списке }
 function TFilmList.IsEmpty(): Boolean;
 begin
-  Result := Head = nil;
+  Result := EntryPoint.Next = nil;
 end;
 
+{ Загрузки фильмов из файла }
 procedure TFilmList.UploadFile(const aFileName: string);
 var
   F: file of TFilm;
@@ -128,6 +129,7 @@ begin
   CloseFile(F);
 end;
 
+{ Сохранение фильмов в файл }
 procedure TFilmList.SaveList(const aFileName: string);
 var
   F: file of TFilm;
@@ -144,22 +146,25 @@ begin
   CloseFile(F);
 end;
 
+{ Создание нового фильма }
 procedure TFilmList.CreateFilm(const aItem: TItem);
 var
   PFilmInfo: PFilm;
 begin
   New(PFilmInfo);
-
   PFilmInfo^.Item := aItem;
   AddFilm(PFilmInfo);
 end;
 
-procedure TFilmList.AddFilm(const Item: PFilm); // appendItem
+{ Добавление нового фильма в таблицу }
+procedure TFilmList.AddFilm(const Item: PFilm);
 begin
-  if Head = nil then
+  if EntryPoint.Next = nil then
   begin
+    EntryPoint.Next := Item;
     Head := Item;
     Tail := Item;
+    Item.Next := nil;
   end
   else
   begin
@@ -170,83 +175,62 @@ begin
   Inc(fICount);
 end;
 
+{ Редактирование фильма }
 procedure TFilmList.EditFilm(const aItem: TItem; const aIndex: Integer);
 var
   CurrNode: PFilm;
 begin
-  CurrNode := Head;
+  CurrNode := EntryPoint.Next;
   while CurrNode.Item.Index <> aIndex + 1 do
     CurrNode := CurrNode.Next;
   CurrNode^.Item := aItem;
+  SaveList(FILE_NAME);
 end;
 
+{ Удаление фильма из списка }
 procedure TFilmList.DeleteFilm(const FilmIndex: Integer);
 var
   CurrNode, PrevNode: PFilm;
-  i: Integer;
 begin
   if not IsEmpty() then
   begin
-    if fICount > 1 then
-    begin
-      if FilmIndex > 1 then
-      begin
-        PrevNode := Head;
-        while PrevNode.Item.Index <> FilmIndex - 1 do    ////////////////////!!!!!!!!!!
-          PrevNode := PrevNode.Next;
-        CurrNode := PrevNode.Next;
-        PrevNode.Next := CurrNode.Next;
-        if CurrNode = Tail then
-          Tail := PrevNode;
-        Dispose(CurrNode);
-      end
-      else
-      begin
-        CurrNode := Head;
-        Head := Head.Next;
-        Dispose(CurrNode);
-      end;
-    end
-    else
-    begin
-      CurrNode := Head;
-      Head := nil;
-      Tail := nil;
-      Dispose(CurrNode);
-    end;
-    i := 1;
-    CurrNode := Head;
-    while CurrNode <> nil do
-    begin
-      CurrNode.Item.Index := i;
-      Inc(i);
-      CurrNode := CurrNode.Next;
-    end;
-    fICount := i - 1;
+    PrevNode := EntryPoint;
+    while PrevNode.Next.Item.Index <> FilmIndex  do
+      PrevNode := PrevNode.Next;
+    CurrNode := PrevNode.Next;
+    PrevNode.Next := CurrNode.Next;
+    if CurrNode = Tail then
+      Tail := PrevNode;
+    Dispose(CurrNode);
   end;
-
-  { по факту
-    Temp := Head;
-    Head:=nil;
-    Tail := nil;
-    Dispose (Temp)
-  }
 end;
 
+{ Получение элемента списка по индексу }
 function TFilmList.GetFilmByIndex(const aIndex: Integer): PFilm;
 var
   CurrNode: PFilm;
 begin
-  CurrNode := Head;
+  CurrNode := EntryPoint.Next;
   while CurrNode.Item.Index <> aIndex + 1 do
     CurrNode := CurrNode.Next;
   Result := CurrNode;
 end;
 
-procedure Proc ();
+{ Переиндексация фильмов }
+procedure TFilmList.RestoreIndexing();
 var
-  T: PChar;
+  i: Integer;
+  CurrNode : PFilm;
 begin
-
+  i := 1;
+  CurrNode := EntryPoint.Next;
+  while CurrNode <> nil do
+  begin
+    CurrNode.Item.Index := i;
+    Inc(i);
+    CurrNode := CurrNode.Next;
+  end;
+  FICount := i - 1;
 end;
+
 end.

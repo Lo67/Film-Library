@@ -49,6 +49,7 @@ type
     procedure edtYearKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
+    procedure etdCurationKeyPress(Sender: TObject; var  Key: Char);
   private
     { Private declarations }
   public
@@ -57,6 +58,7 @@ type
     function GetRating(const aItem: TItem): Integer;
   end;
 
+  procedure ClearFeaturesEdits;
 var
   frmFeatures: TfrmFeatures;
 
@@ -64,6 +66,7 @@ implementation
 
 {$R *.dfm}
 
+{ Создание формы }
 procedure TfrmFeatures.FormCreate(Sender: TObject);
 begin
   if chbxReady.Checked = True then
@@ -72,6 +75,7 @@ begin
     cmbbxRating.Enabled := False;
 end;
 
+{ Очистка эдитов }
 procedure ClearFeaturesEdits;
 begin
   with frmFeatures do
@@ -93,6 +97,7 @@ begin
   end;
 end;
 
+{ Нажатие на комбобокс }
 procedure TfrmFeatures.chbxReadyClick(Sender: TObject);
 begin
   if chbxReady.Checked = True then
@@ -101,6 +106,7 @@ begin
     cmbbxRating.Enabled := False;
 end;
 
+{ кнопка Отмена }
 procedure TfrmFeatures.btnCancelClick(Sender: TObject);
 begin
   ClearFeaturesEdits;
@@ -110,6 +116,7 @@ begin
   frmFilmBase.btnReport.Enabled := frmFilmBase.lvFilmTab.ItemIndex <> -1;
 end;
 
+{ Кнопка ОК }
 procedure TfrmFeatures.btnOKClick(Sender: TObject);
 var
   Info: TItem;
@@ -151,7 +158,6 @@ begin
         if Info.Ready then
           Info.Rating := cmbbxRatingChange(cmbbxRating);
       end;
-
 
       if frmFeatures.Tag = 1 then
         List.CreateFilm(Info)
@@ -244,7 +250,19 @@ begin
   end;
 end;
 
+
+{ Ограничения на эдит года }
 procedure TfrmFeatures.edtYearKeyPress(Sender: TObject; var Key: Char);
+const
+  Digits = ['0' .. '9', #8];
+begin
+  if not(Key in Digits) then
+    Key := #0;
+end;
+
+
+{ ограничение на длительность года }
+procedure TfrmFeatures.etdCurationKeyPress(Sender: TObject; var  Key: Char);
 const
   Digits = ['0' .. '9', #8];
 begin
@@ -295,6 +313,7 @@ begin
   end;
 end;
 
+{ Получение жанра из таблицы }
 function TfrmFeatures.TabGenre(Genre: TGenre): string;
 begin
   case Genre of

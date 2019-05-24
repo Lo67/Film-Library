@@ -118,7 +118,6 @@ begin
     end;
     CurrNode := CurrNode^.Next;
   end;
-
   if not isExist then
   begin
     frmFilmBase.Mistake;
